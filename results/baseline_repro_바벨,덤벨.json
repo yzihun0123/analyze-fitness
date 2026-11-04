@@ -1,0 +1,622 @@
+[
+ {
+  "category": "바벨/덤벨",
+  "exercise": "라잉 트라이셉스 익스텐션",
+  "condition": "팔꿈치 위치 고정",
+  "clips": 2022,
+  "performers": 63,
+  "pos_rate": 0.5044510385756676,
+  "majority": 0.5044510385756676,
+  "acc_LogReg": 0.8343214756258234
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "라잉 트라이셉스 익스텐션",
+  "condition": "손목의 중립",
+  "clips": 2022,
+  "performers": 63,
+  "pos_rate": 0.5009891196834817,
+  "majority": 0.5009891196834817,
+  "acc_LogReg": 0.725516029863856
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "라잉 트라이셉스 익스텐션",
+  "condition": "이완 시 팔 긴장 유지",
+  "clips": 2022,
+  "performers": 63,
+  "pos_rate": 0.5009891196834817,
+  "majority": 0.5009891196834817,
+  "acc_LogReg": 0.5934735554300772
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "라잉 트라이셉스 익스텐션",
+  "condition": "양 팔꿈치 모아줌 유지",
+  "clips": 2022,
+  "performers": 63,
+  "pos_rate": 0.5019782393669634,
+  "majority": 0.5019782393669634,
+  "acc_LogReg": 0.8026656314699794
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "라잉 트라이셉스 익스텐션",
+  "condition": "척추의 중립",
+  "clips": 2022,
+  "performers": 63,
+  "pos_rate": 0.5009891196834817,
+  "majority": 0.5009891196834817,
+  "acc_LogReg": 0.9109515182884749
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "덤벨 컬",
+  "condition": "팔꿈치 위치 고정",
+  "clips": 1439,
+  "performers": 44,
+  "pos_rate": 0.4996525364836692,
+  "majority": 0.5003474635163307,
+  "acc_LogReg": 0.8822098603839441
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "덤벨 컬",
+  "condition": "손목의 중립",
+  "clips": 1439,
+  "performers": 44,
+  "pos_rate": 0.5003474635163307,
+  "majority": 0.5003474635163307,
+  "acc_LogReg": 0.63832692517452
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "덤벨 컬",
+  "condition": "척추의 중립",
+  "clips": 1439,
+  "performers": 44,
+  "pos_rate": 0.4996525364836692,
+  "majority": 0.5003474635163307,
+  "acc_LogReg": 0.8645151614310645
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "덤벨 컬",
+  "condition": "이완 시 팔 긴장 유지",
+  "clips": 1439,
+  "performers": 44,
+  "pos_rate": 0.4996525364836692,
+  "majority": 0.5003474635163307,
+  "acc_LogReg": 0.6524685045811518
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "덤벨 컬",
+  "condition": "수축 시 어깨 으쓱 없음",
+  "clips": 1439,
+  "performers": 44,
+  "pos_rate": 0.5003474635163307,
+  "majority": 0.5003474635163307,
+  "acc_LogReg": 0.8716527595986038
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "사이드 레터럴 레이즈",
+  "condition": "무릎 반동 없음",
+  "clips": 1436,
+  "performers": 44,
+  "pos_rate": 0.5006963788300836,
+  "majority": 0.5006963788300836,
+  "acc_LogReg": 0.8934330006544503
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "사이드 레터럴 레이즈",
+  "condition": "어깨 으쓱 없음",
+  "clips": 1436,
+  "performers": 44,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.8268699552792321
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "사이드 레터럴 레이즈",
+  "condition": "상관과 전완의 각도 고정",
+  "clips": 1436,
+  "performers": 44,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.8135784794938918
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "사이드 레터럴 레이즈",
+  "condition": "손목의 각도 고정",
+  "clips": 1436,
+  "performers": 44,
+  "pos_rate": 0.5313370473537604,
+  "majority": 0.5313370473537604,
+  "acc_LogReg": 0.6702279668411868
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "사이드 레터럴 레이즈",
+  "condition": "상체 반동 없음",
+  "clips": 1436,
+  "performers": 44,
+  "pos_rate": 0.5313370473537604,
+  "majority": 0.5313370473537604,
+  "acc_LogReg": 0.7893358693280978
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 컬",
+  "condition": "팔꿈치 위치 고정",
+  "clips": 1431,
+  "performers": 44,
+  "pos_rate": 0.4996505939902166,
+  "majority": 0.5003494060097834,
+  "acc_LogReg": 0.8473550413040709
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 컬",
+  "condition": "손목의 중립",
+  "clips": 1431,
+  "performers": 44,
+  "pos_rate": 0.4975541579315164,
+  "majority": 0.5024458420684836,
+  "acc_LogReg": 0.6180259148599839
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 컬",
+  "condition": "척추의 중립",
+  "clips": 1431,
+  "performers": 44,
+  "pos_rate": 0.49825296995108315,
+  "majority": 0.5017470300489169,
+  "acc_LogReg": 0.8700324118621795
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 컬",
+  "condition": "이완 시 팔 긴장 유지",
+  "clips": 1431,
+  "performers": 44,
+  "pos_rate": 0.49825296995108315,
+  "majority": 0.5017470300489169,
+  "acc_LogReg": 0.6797234991625851
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 컬",
+  "condition": "수축 시 어깨 으쓱 없음",
+  "clips": 1431,
+  "performers": 44,
+  "pos_rate": 0.5003494060097834,
+  "majority": 0.5003494060097834,
+  "acc_LogReg": 0.8586938457971478
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 런지",
+  "condition": "앞다리 무릎 각도 90도",
+  "clips": 1424,
+  "performers": 42,
+  "pos_rate": 0.7514044943820225,
+  "majority": 0.7514044943820225,
+  "acc_LogReg": 0.970327539260385
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 런지",
+  "condition": "몸통 발 무릎 방향 일치여부",
+  "clips": 1424,
+  "performers": 42,
+  "pos_rate": 0.8110955056179775,
+  "majority": 0.8110955056179775,
+  "acc_LogReg": 0.916778449707306
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 런지",
+  "condition": "뒤다리 무릎 각도 90도",
+  "clips": 1424,
+  "performers": 42,
+  "pos_rate": 0.7219101123595506,
+  "majority": 0.7219101123595506,
+  "acc_LogReg": 0.858944578126759
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 런지",
+  "condition": "척추의 중립",
+  "clips": 1424,
+  "performers": 42,
+  "pos_rate": 0.34480337078651685,
+  "majority": 0.6551966292134832,
+  "acc_LogReg": 0.8629192523640662
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 런지",
+  "condition": "상체의 과조한 숙임/젖힘 여부",
+  "clips": 1424,
+  "performers": 42,
+  "pos_rate": 0.6530898876404494,
+  "majority": 0.6530898876404494,
+  "acc_LogReg": 0.9111933433243273
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "덤벨 벤트오버 로우",
+  "condition": "척추의 중립",
+  "clips": 1419,
+  "performers": 42,
+  "pos_rate": 0.5059901338971107,
+  "majority": 0.5059901338971107,
+  "acc_LogReg": 0.7434674569005995
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "덤벨 벤트오버 로우",
+  "condition": "무릎 반동 없음",
+  "clips": 1419,
+  "performers": 42,
+  "pos_rate": 0.5017618040873855,
+  "majority": 0.5017618040873855,
+  "acc_LogReg": 0.7491718124428932
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "덤벨 벤트오버 로우",
+  "condition": "상체 반동 없음",
+  "clips": 1419,
+  "performers": 42,
+  "pos_rate": 0.5348837209302325,
+  "majority": 0.5348837209302325,
+  "acc_LogReg": 0.7589576805989872
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "덤벨 벤트오버 로우",
+  "condition": "덤벨 궤적과 몸 밀착",
+  "clips": 1419,
+  "performers": 42,
+  "pos_rate": 0.5609584214235377,
+  "majority": 0.5609584214235377,
+  "acc_LogReg": 0.8104362734803607
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "덤벨 벤트오버 로우",
+  "condition": "손목의 중립",
+  "clips": 1419,
+  "performers": 42,
+  "pos_rate": 0.4700493305144468,
+  "majority": 0.5299506694855531,
+  "acc_LogReg": 0.6307945973097717
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 데드리프트",
+  "condition": "척추의 중립",
+  "clips": 1350,
+  "performers": 40,
+  "pos_rate": 0.5074074074074074,
+  "majority": 0.5074074074074074,
+  "acc_LogReg": 0.7524799388747515
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 데드리프트",
+  "condition": "발과 무릎의 방향 일치",
+  "clips": 1350,
+  "performers": 40,
+  "pos_rate": 0.5318518518518518,
+  "majority": 0.5318518518518518,
+  "acc_LogReg": 0.869847912023675
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 데드리프트",
+  "condition": "바벨 궤적과 몸 밀착",
+  "clips": 1350,
+  "performers": 40,
+  "pos_rate": 0.502962962962963,
+  "majority": 0.502962962962963,
+  "acc_LogReg": 0.9060415104542665
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 데드리프트",
+  "condition": "무릎과 골반이 동시에 펴짐",
+  "clips": 1350,
+  "performers": 40,
+  "pos_rate": 0.5037037037037037,
+  "majority": 0.5037037037037037,
+  "acc_LogReg": 0.7728824244400491
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 데드리프트",
+  "condition": "발바닥 지면 고정",
+  "clips": 1350,
+  "performers": 40,
+  "pos_rate": 0.5007407407407407,
+  "majority": 0.5007407407407407,
+  "acc_LogReg": 0.836214427039812
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "덤벨 풀 오버",
+  "condition": "손목의 중립",
+  "clips": 1008,
+  "performers": 63,
+  "pos_rate": 0.5009920634920635,
+  "majority": 0.5009920634920635,
+  "acc_LogReg": 0.7033730158730158
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "덤벨 풀 오버",
+  "condition": "팔꿈치 각도 유지",
+  "clips": 1008,
+  "performers": 63,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.7996031746031746
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "덤벨 풀 오버",
+  "condition": "몸통 벤치 고정",
+  "clips": 1008,
+  "performers": 63,
+  "pos_rate": 0.503968253968254,
+  "majority": 0.503968253968254,
+  "acc_LogReg": 0.8938492063492064
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "덤벨 풀 오버",
+  "condition": "수축시 팔꿈치 모아줌",
+  "clips": 1008,
+  "performers": 63,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.7787698412698413
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "오버 헤드 프레스",
+  "condition": "척추의 중립",
+  "clips": 710,
+  "performers": 44,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.8271886900717608
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "오버 헤드 프레스",
+  "condition": "전완 지면과 수직",
+  "clips": 710,
+  "performers": 44,
+  "pos_rate": 0.5014084507042254,
+  "majority": 0.5014084507042254,
+  "acc_LogReg": 0.9166546643735505
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "오버 헤드 프레스",
+  "condition": "견갑대 고정",
+  "clips": 710,
+  "performers": 44,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.7835811415304637
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "오버 헤드 프레스",
+  "condition": "무릎 반동 없음",
+  "clips": 710,
+  "performers": 44,
+  "pos_rate": 0.49577464788732395,
+  "majority": 0.504225352112676,
+  "acc_LogReg": 0.9541784133826978
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 스쿼트",
+  "condition": "척추의 중립",
+  "clips": 705,
+  "performers": 42,
+  "pos_rate": 0.5049645390070922,
+  "majority": 0.5049645390070922,
+  "acc_LogReg": 0.8852874957725324
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 스쿼트",
+  "condition": "고개 정면",
+  "clips": 705,
+  "performers": 42,
+  "pos_rate": 0.5063829787234042,
+  "majority": 0.5063829787234042,
+  "acc_LogReg": 0.8702731938766375
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 스쿼트",
+  "condition": "발과 무릎의 방향 일치",
+  "clips": 705,
+  "performers": 42,
+  "pos_rate": 0.5063829787234042,
+  "majority": 0.5063829787234042,
+  "acc_LogReg": 0.934728677399461
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 스쿼트",
+  "condition": "발바닥 지면 고정",
+  "clips": 705,
+  "performers": 42,
+  "pos_rate": 0.5049645390070922,
+  "majority": 0.5049645390070922,
+  "acc_LogReg": 0.8382670366944187
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "덤벨 체스트 플라이",
+  "condition": "팔꿈치 살짝 구부린채 고정",
+  "clips": 505,
+  "performers": 63,
+  "pos_rate": 0.500990099009901,
+  "majority": 0.500990099009901,
+  "acc_LogReg": 0.8473052275345623
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "덤벨 체스트 플라이",
+  "condition": "이완 시 덤벨 가슴높이",
+  "clips": 505,
+  "performers": 63,
+  "pos_rate": 0.500990099009901,
+  "majority": 0.500990099009901,
+  "acc_LogReg": 0.8355234735023042
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "덤벨 체스트 플라이",
+  "condition": "등 아치구조 유지",
+  "clips": 505,
+  "performers": 63,
+  "pos_rate": 0.499009900990099,
+  "majority": 0.500990099009901,
+  "acc_LogReg": 0.6557389672939068
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "덤벨 인클라인 체스트 플라이",
+  "condition": "팔꿈치 살짝 구부린채 고정",
+  "clips": 503,
+  "performers": 63,
+  "pos_rate": 0.5029821073558648,
+  "majority": 0.5029821073558648,
+  "acc_LogReg": 0.8169062820020481
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "덤벨 인클라인 체스트 플라이",
+  "condition": "수축 시 덤벨 어깨높이",
+  "clips": 503,
+  "performers": 63,
+  "pos_rate": 0.5049701789264414,
+  "majority": 0.5049701789264414,
+  "acc_LogReg": 0.8067946348566308
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "덤벨 인클라인 체스트 플라이",
+  "condition": "등 아치구조 유지",
+  "clips": 503,
+  "performers": 63,
+  "pos_rate": 0.5029821073558648,
+  "majority": 0.5029821073558648,
+  "acc_LogReg": 0.6440192172299026
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "스탠딩 니업",
+  "condition": "시선 정면",
+  "clips": 357,
+  "performers": 44,
+  "pos_rate": 0.7478991596638656,
+  "majority": 0.7478991596638656,
+  "acc_LogReg": 0.91676640070922
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "스탠딩 니업",
+  "condition": "척추 중립",
+  "clips": 357,
+  "performers": 44,
+  "pos_rate": 0.5042016806722689,
+  "majority": 0.5042016806722689,
+  "acc_LogReg": 0.9446476063829787
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "스탠딩 니업",
+  "condition": "무릎 충분히 올라오고",
+  "clips": 357,
+  "performers": 44,
+  "pos_rate": 0.7478991596638656,
+  "majority": 0.7478991596638656,
+  "acc_LogReg": 0.9212101063829787
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "스탠딩 니업",
+  "condition": "이완시 다리 긴장 유지",
+  "clips": 357,
+  "performers": 44,
+  "pos_rate": 0.7563025210084033,
+  "majority": 0.7563025210084033,
+  "acc_LogReg": 0.8218860815602836
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 로우",
+  "condition": "척추의 중립",
+  "clips": 344,
+  "performers": 42,
+  "pos_rate": 0.1308139534883721,
+  "majority": 0.8691860465116279,
+  "acc_LogReg": 0.8627641380358771
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 로우",
+  "condition": "무릎 반동 없음",
+  "clips": 344,
+  "performers": 42,
+  "pos_rate": 0.125,
+  "majority": 0.875,
+  "acc_LogReg": 0.8434953633323199
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 로우",
+  "condition": "상체 반동 없음",
+  "clips": 344,
+  "performers": 42,
+  "pos_rate": 0.25872093023255816,
+  "majority": 0.7412790697674418,
+  "acc_LogReg": 0.7918742187763926
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 로우",
+  "condition": "바벨 궤적과 몸 밀착",
+  "clips": 344,
+  "performers": 42,
+  "pos_rate": 0.48255813953488375,
+  "majority": 0.5174418604651163,
+  "acc_LogReg": 0.7863186632208372
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 로우",
+  "condition": "손목의 중립",
+  "clips": 344,
+  "performers": 42,
+  "pos_rate": 0.25872093023255816,
+  "majority": 0.7412790697674418,
+  "acc_LogReg": 0.7279101635079896
+ }
+]

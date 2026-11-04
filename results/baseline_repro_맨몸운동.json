@@ -1,0 +1,842 @@
+[
+ {
+  "category": "맨몸 운동",
+  "exercise": "스텝 포워드 다이나믹 런지",
+  "condition": "앞다리 무릎 각도 90도",
+  "clips": 1593,
+  "performers": 48,
+  "pos_rate": 0.7802887633396108,
+  "majority": 0.7802887633396108,
+  "acc_LogReg": 0.9299354442210621
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "스텝 포워드 다이나믹 런지",
+  "condition": "몸통 발 무릎 방향 일치여부",
+  "clips": 1593,
+  "performers": 48,
+  "pos_rate": 0.8123038292529818,
+  "majority": 0.8123038292529818,
+  "acc_LogReg": 0.9116906005787587
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "스텝 포워드 다이나믹 런지",
+  "condition": "뒤다리 무릎 각도 90도",
+  "clips": 1593,
+  "performers": 48,
+  "pos_rate": 0.7162586315128688,
+  "majority": 0.7162586315128688,
+  "acc_LogReg": 0.8796469043781672
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "스텝 포워드 다이나믹 런지",
+  "condition": "척추의 중립",
+  "clips": 1593,
+  "performers": 48,
+  "pos_rate": 0.37225360954174513,
+  "majority": 0.6277463904582549,
+  "acc_LogReg": 0.8407965235986214
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "스텝 포워드 다이나믹 런지",
+  "condition": "상체의 과조한 숙임/젖힘 여부",
+  "clips": 1593,
+  "performers": 48,
+  "pos_rate": 0.5951035781544256,
+  "majority": 0.5951035781544256,
+  "acc_LogReg": 0.8429253288644094
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "버피 테스트",
+  "condition": "팔 펴고 엎드렸을때 허리 휨 없음",
+  "clips": 1558,
+  "performers": 48,
+  "pos_rate": 0.7785622593068036,
+  "majority": 0.7785622593068036,
+  "acc_LogReg": 0.787300186139728
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "버피 테스트",
+  "condition": "이완시 팔꿈치 90도",
+  "clips": 1558,
+  "performers": 48,
+  "pos_rate": 0.7522464698331194,
+  "majority": 0.7522464698331194,
+  "acc_LogReg": 0.853698785803954
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "버피 테스트",
+  "condition": "가슴의 충분한 이동",
+  "clips": 1558,
+  "performers": 48,
+  "pos_rate": 0.7830551989730423,
+  "majority": 0.7830551989730423,
+  "acc_LogReg": 0.7731020195762084
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "버피 테스트",
+  "condition": "손의 위치 가슴 중앙 여부",
+  "clips": 1558,
+  "performers": 48,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.7017937616755048
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "버피 테스트",
+  "condition": "고개 젖힘/숙임 여부",
+  "clips": 1558,
+  "performers": 48,
+  "pos_rate": 0.43838254172015406,
+  "majority": 0.5616174582798459,
+  "acc_LogReg": 0.7469901439130955
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "스탠딩 사이드 크런치",
+  "condition": "척추의 중립",
+  "clips": 1544,
+  "performers": 48,
+  "pos_rate": 0.6282383419689119,
+  "majority": 0.6282383419689119,
+  "acc_LogReg": 0.9139054009569013
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "스탠딩 사이드 크런치",
+  "condition": "시선 정면 유지",
+  "clips": 1544,
+  "performers": 48,
+  "pos_rate": 0.5019430051813472,
+  "majority": 0.5019430051813472,
+  "acc_LogReg": 0.8562515874173352
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "스탠딩 사이드 크런치",
+  "condition": "수축시 무릎과 팔꿈치가 충분히 가까움",
+  "clips": 1544,
+  "performers": 48,
+  "pos_rate": 0.5582901554404145,
+  "majority": 0.5582901554404145,
+  "acc_LogReg": 0.8341669933043929
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "스탠딩 사이드 크런치",
+  "condition": "무릎이 몸통 측면에서 올라오는지 여부",
+  "clips": 1544,
+  "performers": 48,
+  "pos_rate": 0.5893782383419689,
+  "majority": 0.5893782383419689,
+  "acc_LogReg": 0.9472119380690455
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "스탠딩 사이드 크런치",
+  "condition": "양 손이 머리 뒤에 위치",
+  "clips": 1544,
+  "performers": 48,
+  "pos_rate": 0.5576424870466321,
+  "majority": 0.5576424870466321,
+  "acc_LogReg": 0.9553676164056608
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "스텝 백워드 다이나믹 런지",
+  "condition": "앞다리 무릎 각도 90도",
+  "clips": 1232,
+  "performers": 53,
+  "pos_rate": 0.711038961038961,
+  "majority": 0.711038961038961,
+  "acc_LogReg": 0.9779324942381562
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "스텝 백워드 다이나믹 런지",
+  "condition": "몸통 발 무릎 방향 일치여부",
+  "clips": 1232,
+  "performers": 53,
+  "pos_rate": 0.8060064935064936,
+  "majority": 0.8060064935064936,
+  "acc_LogReg": 0.8956841918513292
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "스텝 백워드 다이나믹 런지",
+  "condition": "뒤다리 무릎 각도 90도",
+  "clips": 1232,
+  "performers": 53,
+  "pos_rate": 0.7232142857142857,
+  "majority": 0.7232142857142857,
+  "acc_LogReg": 0.895904280245896
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "스텝 백워드 다이나믹 런지",
+  "condition": "척추의 중립",
+  "clips": 1232,
+  "performers": 53,
+  "pos_rate": 0.4496753246753247,
+  "majority": 0.5503246753246753,
+  "acc_LogReg": 0.8316389615747304
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "스텝 백워드 다이나믹 런지",
+  "condition": "상체의 과조한 숙임/젖힘 여부",
+  "clips": 1232,
+  "performers": 53,
+  "pos_rate": 0.6753246753246753,
+  "majority": 0.6753246753246753,
+  "acc_LogReg": 0.9268131114098368
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "사이드 런지",
+  "condition": "앞다리 무릎 각도 90도",
+  "clips": 1110,
+  "performers": 33,
+  "pos_rate": 0.69009009009009,
+  "majority": 0.69009009009009,
+  "acc_LogReg": 0.820082942427529
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "사이드 런지",
+  "condition": "몸통 발 무릎 방향 일치여부",
+  "clips": 1110,
+  "performers": 33,
+  "pos_rate": 0.8108108108108109,
+  "majority": 0.8108108108108109,
+  "acc_LogReg": 0.79108340986885
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "사이드 런지",
+  "condition": "뒤다리 무릎 각도 90도",
+  "clips": 1110,
+  "performers": 33,
+  "pos_rate": 0.6585585585585586,
+  "majority": 0.6585585585585586,
+  "acc_LogReg": 0.7057079757322333
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "사이드 런지",
+  "condition": "척추의 중립",
+  "clips": 1110,
+  "performers": 33,
+  "pos_rate": 0.3441441441441441,
+  "majority": 0.6558558558558558,
+  "acc_LogReg": 0.8195260681798235
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "사이드 런지",
+  "condition": "상체의 과조한 숙임/젖힘 여부",
+  "clips": 1110,
+  "performers": 33,
+  "pos_rate": 0.6549549549549549,
+  "majority": 0.6549549549549549,
+  "acc_LogReg": 0.828809803494408
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 로우",
+  "condition": "척추의 중립",
+  "clips": 834,
+  "performers": 33,
+  "pos_rate": 0.6258992805755396,
+  "majority": 0.6258992805755396,
+  "acc_LogReg": 0.7773972515451204
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 로우",
+  "condition": "무릎 반동 없음",
+  "clips": 834,
+  "performers": 33,
+  "pos_rate": 0.6282973621103117,
+  "majority": 0.6282973621103117,
+  "acc_LogReg": 0.7622859824068697
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 로우",
+  "condition": "상체 반동 없음",
+  "clips": 834,
+  "performers": 33,
+  "pos_rate": 0.6654676258992805,
+  "majority": 0.6654676258992805,
+  "acc_LogReg": 0.7547628405990818
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 로우",
+  "condition": "바벨 궤적과 몸 밀착",
+  "clips": 834,
+  "performers": 33,
+  "pos_rate": 0.5815347721822542,
+  "majority": 0.5815347721822542,
+  "acc_LogReg": 0.8462407106747523
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 로우",
+  "condition": "손목의 중립",
+  "clips": 834,
+  "performers": 33,
+  "pos_rate": 0.5431654676258992,
+  "majority": 0.5431654676258992,
+  "acc_LogReg": 0.6612925836349316
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "스탠딩 니업",
+  "condition": "시선 정면",
+  "clips": 793,
+  "performers": 48,
+  "pos_rate": 0.37326607818411095,
+  "majority": 0.626733921815889,
+  "acc_LogReg": 0.7595376662810873
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "스탠딩 니업",
+  "condition": "척추 중립",
+  "clips": 793,
+  "performers": 48,
+  "pos_rate": 0.626733921815889,
+  "majority": 0.626733921815889,
+  "acc_LogReg": 0.9356133723732408
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "스탠딩 니업",
+  "condition": "무릎 충분히 올라오고",
+  "clips": 793,
+  "performers": 48,
+  "pos_rate": 0.6860025220680959,
+  "majority": 0.6860025220680959,
+  "acc_LogReg": 0.8829341984769616
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "스탠딩 니업",
+  "condition": "이완시 다리 긴장 유지",
+  "clips": 793,
+  "performers": 48,
+  "pos_rate": 0.6885245901639344,
+  "majority": 0.6885245901639344,
+  "acc_LogReg": 0.7528091563042221
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "시저크로스",
+  "condition": "허리 지면 고정",
+  "clips": 608,
+  "performers": 19,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.599609375
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "시저크로스",
+  "condition": "수축 시 양무릎 교차",
+  "clips": 608,
+  "performers": 19,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.5501302083333333
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "시저크로스",
+  "condition": "시선 배꼽 고정",
+  "clips": 608,
+  "performers": 19,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.927734375
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "시저크로스",
+  "condition": "다리와 지면 사이 적당한 거리",
+  "clips": 608,
+  "performers": 19,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.8092447916666667
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "시저크로스",
+  "condition": "무릎 너무 굽히지 않음",
+  "clips": 608,
+  "performers": 19,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.759765625
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "푸시업",
+  "condition": "척추의 중립",
+  "clips": 608,
+  "performers": 19,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.7115885416666666
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "푸시업",
+  "condition": "이완시 팔꿈치 90도",
+  "clips": 608,
+  "performers": 19,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.8092447916666666
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "푸시업",
+  "condition": "가슴의 충분한 이동",
+  "clips": 608,
+  "performers": 19,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.8092447916666666
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "푸시업",
+  "condition": "손의 위치 가슴 중앙 여부",
+  "clips": 608,
+  "performers": 19,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.8424479166666666
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "푸시업",
+  "condition": "고개 젖힘/숙임 여부",
+  "clips": 608,
+  "performers": 19,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.7877604166666667
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "니푸쉬업",
+  "condition": "척추의 중립",
+  "clips": 606,
+  "performers": 19,
+  "pos_rate": 0.5016501650165016,
+  "majority": 0.5016501650165016,
+  "acc_LogReg": 0.6716672207446809
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "니푸쉬업",
+  "condition": "이완시 팔꿈치 90도",
+  "clips": 606,
+  "performers": 19,
+  "pos_rate": 0.5016501650165016,
+  "majority": 0.5016501650165016,
+  "acc_LogReg": 0.7103280141843972
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "니푸쉬업",
+  "condition": "가슴의 충분한 이동",
+  "clips": 606,
+  "performers": 19,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.7605967420212766
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "니푸쉬업",
+  "condition": "손의 위치 가슴 중앙 여부",
+  "clips": 606,
+  "performers": 19,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.7912788120567376
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "니푸쉬업",
+  "condition": "고개 젖힘/숙임 여부",
+  "clips": 606,
+  "performers": 19,
+  "pos_rate": 0.5016501650165016,
+  "majority": 0.5016501650165016,
+  "acc_LogReg": 0.7877188608156028
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "라잉 레그 레이즈",
+  "condition": "허리 지면 고정",
+  "clips": 304,
+  "performers": 19,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.6380208333333333
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "라잉 레그 레이즈",
+  "condition": "허벅지와 종아리 각도 고정",
+  "clips": 304,
+  "performers": 19,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.8411458333333333
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "라잉 레그 레이즈",
+  "condition": "이완 시 다리 긴장유지",
+  "clips": 304,
+  "performers": 19,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.6497395833333333
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "라잉 레그 레이즈",
+  "condition": "고개 숙임 여부",
+  "clips": 304,
+  "performers": 19,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.9361979166666666
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "크런치",
+  "condition": "허리 지면 고정",
+  "clips": 304,
+  "performers": 19,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.6041666666666666
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "크런치",
+  "condition": "견갑골이 지면으로부터 충분히 올라옴",
+  "clips": 304,
+  "performers": 19,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.6458333333333333
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "크런치",
+  "condition": "어깨반동 없음",
+  "clips": 304,
+  "performers": 19,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.66015625
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "크런치",
+  "condition": "이완시 긴장 유지",
+  "clips": 304,
+  "performers": 19,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.6184895833333333
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "프런트 레이즈",
+  "condition": "상체 뒤로 숙이지 않기",
+  "clips": 280,
+  "performers": 33,
+  "pos_rate": 0.625,
+  "majority": 0.625,
+  "acc_LogReg": 0.94140625
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "프런트 레이즈",
+  "condition": "팔꿈치 살짝 구부린채 고정",
+  "clips": 280,
+  "performers": 33,
+  "pos_rate": 0.625,
+  "majority": 0.625,
+  "acc_LogReg": 0.934375
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "프런트 레이즈",
+  "condition": "손목 어깨 또는 턱선까지 올리기",
+  "clips": 280,
+  "performers": 33,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.92265625
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "업라이트로우",
+  "condition": "팔꿈치가 손목 리드",
+  "clips": 278,
+  "performers": 33,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.8169270833333333
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "업라이트로우",
+  "condition": "견갑골 하강 유지",
+  "clips": 278,
+  "performers": 33,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.854667467948718
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "업라이트로우",
+  "condition": "바벨 상체 밀착",
+  "clips": 278,
+  "performers": 33,
+  "pos_rate": 0.7482014388489209,
+  "majority": 0.7482014388489209,
+  "acc_LogReg": 0.9404647435897435
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "크로스 런지",
+  "condition": "앞다리 무릎 각도 90도",
+  "clips": 277,
+  "performers": 33,
+  "pos_rate": 0.6245487364620939,
+  "majority": 0.6245487364620939,
+  "acc_LogReg": 0.9470152243589743
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "크로스 런지",
+  "condition": "몸통 앞발 앞무릎 방향 일치여부",
+  "clips": 277,
+  "performers": 33,
+  "pos_rate": 0.4981949458483754,
+  "majority": 0.5018050541516246,
+  "acc_LogReg": 0.8001802884615384
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "크로스 런지",
+  "condition": "상체 정면 균형잡기",
+  "clips": 277,
+  "performers": 33,
+  "pos_rate": 0.37545126353790614,
+  "majority": 0.6245487364620939,
+  "acc_LogReg": 0.9199719551282051
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "굿모닝",
+  "condition": "무릎 구부린채 고정",
+  "clips": 276,
+  "performers": 33,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.9176155533063428
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "굿모닝",
+  "condition": "시선 방향 유지",
+  "clips": 276,
+  "performers": 33,
+  "pos_rate": 0.5036231884057971,
+  "majority": 0.5036231884057971,
+  "acc_LogReg": 0.8411089321862348
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "굿모닝",
+  "condition": "척추의 중립",
+  "clips": 276,
+  "performers": 33,
+  "pos_rate": 0.4963768115942029,
+  "majority": 0.5036231884057971,
+  "acc_LogReg": 0.9601994770580297
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 스티프 데드리프트",
+  "condition": "바벨 궤적과 몸 밀착",
+  "clips": 269,
+  "performers": 32,
+  "pos_rate": 0.6245353159851301,
+  "majority": 0.6245353159851301,
+  "acc_LogReg": 0.9048582995951417
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 스티프 데드리프트",
+  "condition": "무릎 구부린채 고정",
+  "clips": 269,
+  "performers": 32,
+  "pos_rate": 0.620817843866171,
+  "majority": 0.620817843866171,
+  "acc_LogReg": 0.7787565367746289
+ },
+ {
+  "category": "바벨/덤벨",
+  "exercise": "바벨 스티프 데드리프트",
+  "condition": "척추의 중립",
+  "clips": 269,
+  "performers": 32,
+  "pos_rate": 0.24535315985130113,
+  "majority": 0.7546468401486989,
+  "acc_LogReg": 0.8411721912955465
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "힙쓰러스트",
+  "condition": "수축시 무릎부터 어깨까지 일자",
+  "clips": 152,
+  "performers": 19,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.78125
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "힙쓰러스트",
+  "condition": "이완 시 긴장 유지",
+  "clips": 152,
+  "performers": 19,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.6302083333333334
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "힙쓰러스트",
+  "condition": "고개 들지 않기",
+  "clips": 152,
+  "performers": 19,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.953125
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "바이시클 크런치",
+  "condition": "허리 지면 고정",
+  "clips": 151,
+  "performers": 19,
+  "pos_rate": 0.4966887417218543,
+  "majority": 0.5033112582781457,
+  "acc_LogReg": 0.5372509057971014
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "바이시클 크런치",
+  "condition": "수축시 무릎 엉덩이 지남 ",
+  "clips": 151,
+  "performers": 19,
+  "pos_rate": 0.5033112582781457,
+  "majority": 0.5033112582781457,
+  "acc_LogReg": 0.6492300724637681
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "바이시클 크런치",
+  "condition": "견갑골이 지면으로부터 충분히올라옴",
+  "clips": 151,
+  "performers": 19,
+  "pos_rate": 0.5033112582781457,
+  "majority": 0.5033112582781457,
+  "acc_LogReg": 0.7358469202898551
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "플랭크",
+  "condition": "팔꿈치가 어깨보다 안쪽에 위치하지 않음",
+  "clips": 151,
+  "performers": 19,
+  "pos_rate": 0.4966887417218543,
+  "majority": 0.5033112582781457,
+  "acc_LogReg": 0.6023550724637681
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "플랭크",
+  "condition": "몸통과 엉덩이의 정렬 유지",
+  "clips": 151,
+  "performers": 19,
+  "pos_rate": 0.4966887417218543,
+  "majority": 0.5033112582781457,
+  "acc_LogReg": 0.8118206521739131
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "플랭크",
+  "condition": "상체의 지면으로부터 충분한 거리 유지",
+  "clips": 151,
+  "performers": 19,
+  "pos_rate": 0.5033112582781457,
+  "majority": 0.5033112582781457,
+  "acc_LogReg": 0.6790081521739131
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "Y - Exercise",
+  "condition": "양 팔 높이 동일",
+  "clips": 148,
+  "performers": 19,
+  "pos_rate": 0.5067567567567568,
+  "majority": 0.5067567567567568,
+  "acc_LogReg": 0.7338191699604742
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "Y - Exercise",
+  "condition": "엄지손가락 하늘방향",
+  "clips": 148,
+  "performers": 19,
+  "pos_rate": 0.5135135135135135,
+  "majority": 0.5135135135135135,
+  "acc_LogReg": 0.6914525691699605
+ },
+ {
+  "category": "맨몸 운동",
+  "exercise": "Y - Exercise",
+  "condition": "경추 중립 또는 후인(retraction) 유지",
+  "clips": 148,
+  "performers": 19,
+  "pos_rate": 0.5135135135135135,
+  "majority": 0.5135135135135135,
+  "acc_LogReg": 0.8840167984189724
+ }
+]

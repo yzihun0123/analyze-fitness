@@ -1,0 +1,46 @@
+{
+ "기구": {
+  "json_2d": 4262,
+  "json_3d": 4262,
+  "only_2d": 0,
+  "only_3d": 0,
+  "usable": 4253,
+  "performers": 32,
+  "performers_2d_ok": 32,
+  "excluded": {
+   "2D 프레임 16 아님": 9,
+   "2D 읽기 실패": 0
+  },
+  "exercises": 8
+ },
+ "맨몸운동": {
+  "json_2d": 15461,
+  "json_3d": 16423,
+  "only_2d": 1119,
+  "only_3d": 2081,
+  "usable": 13076,
+  "performers": 62,
+  "performers_2d_ok": 67,
+  "excluded": {
+   "2D 프레임 16 아님": 186,
+   "2D 읽기 실패": 0,
+   "3D 이상값": 1080,
+   "3D 없음": 1119
+  },
+  "exercises": 21
+ },
+ "바벨,덤벨": {
+  "json_2d": 14745,
+  "json_3d": 14745,
+  "only_2d": 0,
+  "only_3d": 0,
+  "usable": 14653,
+  "performers": 95,
+  "performers_2d_ok": 95,
+  "excluded": {
+   "2D 프레임 16 아님": 92,
+   "2D 읽기 실패": 0
+  },
+  "exercises": 14
+ }
+}

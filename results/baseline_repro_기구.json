@@ -1,0 +1,302 @@
+[
+ {
+  "category": "기구",
+  "exercise": "로잉머신",
+  "condition": "체스트 업 유지",
+  "clips": 1136,
+  "performers": 32,
+  "pos_rate": 0.5008802816901409,
+  "majority": 0.5008802816901409,
+  "acc_LogReg": 0.8037078546195237
+ },
+ {
+  "category": "기구",
+  "exercise": "로잉머신",
+  "condition": "상체 과도한 젖힘 없음",
+  "clips": 1136,
+  "performers": 32,
+  "pos_rate": 0.5008802816901409,
+  "majority": 0.5008802816901409,
+  "acc_LogReg": 0.8456997723696678
+ },
+ {
+  "category": "기구",
+  "exercise": "로잉머신",
+  "condition": "수축 시 팔 당김보다 다리 펴짐이 우선",
+  "clips": 1136,
+  "performers": 32,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.7788850382664204
+ },
+ {
+  "category": "기구",
+  "exercise": "로잉머신",
+  "condition": "이완 시 팔 펴짐이 다리 접힘보다 우선",
+  "clips": 1136,
+  "performers": 32,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.6836301404939074
+ },
+ {
+  "category": "기구",
+  "exercise": "로잉머신",
+  "condition": "어깨 으쓱 없음",
+  "clips": 1136,
+  "performers": 32,
+  "pos_rate": 0.49735915492957744,
+  "majority": 0.5026408450704225,
+  "acc_LogReg": 0.7771195960565149
+ },
+ {
+  "category": "기구",
+  "exercise": "풀업",
+  "condition": "시선 위쪽 유지 ",
+  "clips": 574,
+  "performers": 32,
+  "pos_rate": 0.5,
+  "majority": 0.5,
+  "acc_LogReg": 0.826710838607595
+ },
+ {
+  "category": "기구",
+  "exercise": "풀업",
+  "condition": "이완 시 숄더패킹",
+  "clips": 574,
+  "performers": 32,
+  "pos_rate": 0.5017421602787456,
+  "majority": 0.5017421602787456,
+  "acc_LogReg": 0.656551621835443
+ },
+ {
+  "category": "기구",
+  "exercise": "풀업",
+  "condition": "몸통 흔들림 없음",
+  "clips": 574,
+  "performers": 32,
+  "pos_rate": 0.5017421602787456,
+  "majority": 0.5017421602787456,
+  "acc_LogReg": 0.7377027294303797
+ },
+ {
+  "category": "기구",
+  "exercise": "풀업",
+  "condition": "수축 시 몸통-팔꿈치 사이 모아줌",
+  "clips": 574,
+  "performers": 32,
+  "pos_rate": 0.5017421602787456,
+  "majority": 0.5017421602787456,
+  "acc_LogReg": 0.8359325553797469
+ },
+ {
+  "category": "기구",
+  "exercise": "케이블 푸시 다운",
+  "condition": "팔꿈치 위치 고정",
+  "clips": 569,
+  "performers": 32,
+  "pos_rate": 0.4991212653778559,
+  "majority": 0.5008787346221442,
+  "acc_LogReg": 0.7578270802904901
+ },
+ {
+  "category": "기구",
+  "exercise": "케이블 푸시 다운",
+  "condition": "손목의 중립",
+  "clips": 569,
+  "performers": 32,
+  "pos_rate": 0.4973637961335677,
+  "majority": 0.5026362038664323,
+  "acc_LogReg": 0.6872546707643622
+ },
+ {
+  "category": "기구",
+  "exercise": "케이블 푸시 다운",
+  "condition": "이완 시 팔 긴장 유지",
+  "clips": 569,
+  "performers": 32,
+  "pos_rate": 0.4973637961335677,
+  "majority": 0.5026362038664323,
+  "acc_LogReg": 0.6058769981337228
+ },
+ {
+  "category": "기구",
+  "exercise": "케이블 푸시 다운",
+  "condition": "상체 과도한 숙임 없음",
+  "clips": 569,
+  "performers": 32,
+  "pos_rate": 0.5026362038664324,
+  "majority": 0.5026362038664324,
+  "acc_LogReg": 0.8810311688575139
+ },
+ {
+  "category": "기구",
+  "exercise": "딥스",
+  "condition": "상체 살짝 숙임 유지",
+  "clips": 566,
+  "performers": 32,
+  "pos_rate": 0.5035335689045937,
+  "majority": 0.5035335689045937,
+  "acc_LogReg": 0.8045301053113554
+ },
+ {
+  "category": "기구",
+  "exercise": "딥스",
+  "condition": "수축 시 고개 안 젖힘 ",
+  "clips": 566,
+  "performers": 32,
+  "pos_rate": 0.5017667844522968,
+  "majority": 0.5017667844522968,
+  "acc_LogReg": 0.8076773486929737
+ },
+ {
+  "category": "기구",
+  "exercise": "딥스",
+  "condition": "이완 시 팔꿈치 각도 90도",
+  "clips": 566,
+  "performers": 32,
+  "pos_rate": 0.5017667844522968,
+  "majority": 0.5017667844522968,
+  "acc_LogReg": 0.8968355862887113
+ },
+ {
+  "category": "기구",
+  "exercise": "딥스",
+  "condition": "팔꿈치-몸통의 적당한 거리",
+  "clips": 566,
+  "performers": 32,
+  "pos_rate": 0.5053003533568905,
+  "majority": 0.5053003533568905,
+  "acc_LogReg": 0.8786194274475525
+ },
+ {
+  "category": "기구",
+  "exercise": "랫풀 다운",
+  "condition": "수축 시 적당한 상체 젖힘",
+  "clips": 564,
+  "performers": 32,
+  "pos_rate": 0.49822695035460995,
+  "majority": 0.50177304964539,
+  "acc_LogReg": 0.8775941369485778
+ },
+ {
+  "category": "기구",
+  "exercise": "랫풀 다운",
+  "condition": "손목의 중립",
+  "clips": 564,
+  "performers": 32,
+  "pos_rate": 0.49822695035460995,
+  "majority": 0.50177304964539,
+  "acc_LogReg": 0.7716220525636643
+ },
+ {
+  "category": "기구",
+  "exercise": "랫풀 다운",
+  "condition": "이완 시 숄더패킹",
+  "clips": 564,
+  "performers": 32,
+  "pos_rate": 0.50177304964539,
+  "majority": 0.50177304964539,
+  "acc_LogReg": 0.6742906216590427
+ },
+ {
+  "category": "기구",
+  "exercise": "랫풀 다운",
+  "condition": "수축 시 몸통-팔꿈치 사이 모아줌",
+  "clips": 564,
+  "performers": 32,
+  "pos_rate": 0.50177304964539,
+  "majority": 0.50177304964539,
+  "acc_LogReg": 0.8958652937888135
+ },
+ {
+  "category": "기구",
+  "exercise": "케이블 크런치",
+  "condition": "상완과 전완의 각도 고정 ",
+  "clips": 286,
+  "performers": 32,
+  "pos_rate": 0.5034965034965035,
+  "majority": 0.5034965034965035,
+  "acc_LogReg": 0.7427684294871795
+ },
+ {
+  "category": "기구",
+  "exercise": "케이블 크런치",
+  "condition": "팔꿈치와 몸통 각도 고정",
+  "clips": 286,
+  "performers": 32,
+  "pos_rate": 0.4965034965034965,
+  "majority": 0.5034965034965035,
+  "acc_LogReg": 0.7193309294871795
+ },
+ {
+  "category": "기구",
+  "exercise": "케이블 크런치",
+  "condition": "수축 시 등의 굽힘",
+  "clips": 286,
+  "performers": 32,
+  "pos_rate": 0.5034965034965035,
+  "majority": 0.5034965034965035,
+  "acc_LogReg": 0.7363581730769231
+ },
+ {
+  "category": "기구",
+  "exercise": "페이스 풀",
+  "condition": "수축 시 팔꿈치 각도 90도",
+  "clips": 283,
+  "performers": 32,
+  "pos_rate": 0.49823321554770317,
+  "majority": 0.5017667844522968,
+  "acc_LogReg": 0.8374293606612686
+ },
+ {
+  "category": "기구",
+  "exercise": "페이스 풀",
+  "condition": "수축시 양 손과 이마 동일선상 위치",
+  "clips": 283,
+  "performers": 32,
+  "pos_rate": 0.49823321554770317,
+  "majority": 0.5017667844522968,
+  "acc_LogReg": 0.9592664051956815
+ },
+ {
+  "category": "기구",
+  "exercise": "페이스 풀",
+  "condition": "상완의 외회전",
+  "clips": 283,
+  "performers": 32,
+  "pos_rate": 0.49469964664310956,
+  "majority": 0.5053003533568905,
+  "acc_LogReg": 0.8200278340080972
+ },
+ {
+  "category": "기구",
+  "exercise": "행잉 레그 레이즈",
+  "condition": "어깨와 귀 사이 적당한 거리 유지",
+  "clips": 275,
+  "performers": 32,
+  "pos_rate": 0.5054545454545455,
+  "majority": 0.5054545454545455,
+  "acc_LogReg": 0.8836186568571966
+ },
+ {
+  "category": "기구",
+  "exercise": "행잉 레그 레이즈",
+  "condition": "두 다리 사이 모아줌 유지",
+  "clips": 275,
+  "performers": 32,
+  "pos_rate": 0.509090909090909,
+  "majority": 0.509090909090909,
+  "acc_LogReg": 0.9073671241275232
+ },
+ {
+  "category": "기구",
+  "exercise": "행잉 레그 레이즈",
+  "condition": "이완 시 다리 긴장 유지",
+  "clips": 275,
+  "performers": 32,
+  "pos_rate": 0.49818181818181817,
+  "majority": 0.5018181818181818,
+  "acc_LogReg": 0.7587181369081306
+ }
+]

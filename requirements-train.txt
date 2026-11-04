@@ -1,0 +1,10 @@
+# 실험 재현용 (Python 3.12). 앱만 실행할 때는 requirements.txt 로 충분
+-r requirements.txt
+scikit-learn==1.9.1
+scipy==1.18.1
+matplotlib==3.11.2
+tensorflow==2.21.0
+openpyxl==3.1.5
+nbformat==5.11.1
+nbconvert==7.17.2
+ipykernel==7.4.0
