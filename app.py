@@ -399,8 +399,8 @@ def page_video():
         import video_pose as vp
         assert os.path.exists(vp.MODEL), f"포즈 모델 파일이 없습니다: {vp.MODEL}"
     except Exception as err:
-        st.error("이 서버에서는 영상 분석(MediaPipe)을 쓸 수 없습니다. 배포 안정성을 위해 Cloud 배포본에는 넣지 않았습니다 — "
-                 f"**로컬 실행**(`streamlit run app.py`)에서 사용하세요.\n\n세부: {err}"); return
+        st.error("이 서버에서 영상 분석(MediaPipe)을 불러오지 못했습니다. requirements.txt 의 mediapipe, packages.txt(libgl1·libglib2.0-0·libportaudio2), "
+                 f"models/pose_landmarker_full.task 가 배포에 포함됐는지 확인하세요. 로컬 실행(`streamlit run app.py`)에서는 동작합니다.\n\n세부: {err}"); return
     with st.spinner("관절 검출 중… (영상 길이에 따라 수십 초)"):
         try:
             W, V, fps, thumbs = analyze_video(up.getvalue())
@@ -484,7 +484,8 @@ AI Hub 클립의 프레임을 한 장씩 학습한 모델로, 조건마다 **사
         import video_pose as vp
         assert os.path.exists(vp.MODEL), f"포즈 모델 파일이 없습니다: {vp.MODEL}"
     except Exception as err:
-        st.error(f"이 서버에서는 사진 분석(MediaPipe)을 쓸 수 없습니다 — **로컬 실행**에서 사용하세요.\n\n세부: {err}"); return
+        st.error("이 서버에서 사진 분석(MediaPipe)을 불러오지 못했습니다. requirements.txt 의 mediapipe, packages.txt, models/pose_landmarker_full.task "
+                 f"가 배포에 포함됐는지 확인하세요. 로컬 실행에서는 동작합니다.\n\n세부: {err}"); return
     with st.spinner("관절 검출 중…"):
         try:
             W, V, thumb = analyze_photo(up.getvalue())

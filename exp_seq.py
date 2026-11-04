@@ -105,8 +105,9 @@ def metrics(y, p):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--cache", default="cache"); ap.add_argument("--input", choices=["3d", "2d", "3d_ang"] + [f"2dv{v}" for v in range(1, 6)], default="3d",
-                                                                 help="3d_ang = 3D 좌표 72 + 프레임별 관절각·귀-어깨 거리 17 / 2dvN = 2D 단일 시점 N")
+    ap.add_argument("--cache", default="cache"); ap.add_argument("--input", choices=["3d", "2d", "3d_ang", "3d_ang_vid"] + [f"2dv{v}" for v in range(1, 6)], default="3d",
+                                                                 help="3d_ang = 3D 좌표 72 + 프레임별 관절각·귀-어깨 거리 17 / 3d_ang_vid = 3d_ang 을 영상(MediaPipe)으로 "
+                                                                      "관측 가능한 관절만으로 재구성 / 2dvN = 2D 단일 시점 N")
     ap.add_argument("--clipset", choices=["paired", "all2d"], default="paired")
     ap.add_argument("--models", default="logreg,cnn,gru"); ap.add_argument("--exercises", default="rep6")
     ap.add_argument("--folds", type=int, default=8); ap.add_argument("--epochs", type=int, default=150)
@@ -115,9 +116,11 @@ def main():
     a = ap.parse_args()
     assert a.input.startswith("2d") or a.clipset == "paired", "3D 입력은 paired 클립 집합만 가능"
     from sklearn.model_selection import GroupKFold
+    from video_pose import observable
     metas, X2, A, X3 = load_cache(a.cache, a.clipset)
     S_all = {"3d": lambda: norm3d(X3), "2d": lambda: norm2d(X2),
              "3d_ang": lambda: np.concatenate([norm3d(X3), angles3d(X3.astype(np.float64)).astype(np.float32)], -1),
+             "3d_ang_vid": lambda: (lambda O: np.concatenate([norm3d(O.astype(np.float32)), angles3d(O).astype(np.float32)], -1))(observable(X3.astype(np.float64))),
              **{f"2dv{v + 1}": (lambda v=v: norm2d(X2[:, :, [v]])) for v in range(5)}}[a.input]()
     byex = collections.defaultdict(list)
     for i, r in enumerate(metas): byex[r["exercise"]].append(i)
