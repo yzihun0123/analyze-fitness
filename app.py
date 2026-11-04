@@ -12,6 +12,7 @@ from pathlib import Path
 import numpy as np, pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
+import streamlit.components.v1 as components
 from build_cache import JOINTS
 from exp_seq import norm3d, angles3d, summary
 
@@ -51,33 +52,97 @@ def fmt(df, cols=None, digits=3):
     return df.style.format({c: f"{{:.{digits}f}}" for c in cols})
 
 # ---------------- 골격 시각화 ----------------
-def skeleton_fig(seqs, title="", height=520):
-    """seqs: [(이름, 색, (16,24,3) 정규화 좌표)] -> 프레임 애니메이션 3D 골격. 화면 축: x=좌우, y=깊이(z), z=위아래(y)"""
+VIEWS = {"정면": (0.2, -2.0, 0.4), "측면": (2.0, 0.2, 0.4), "위": (0.1, -0.4, 2.1), "대각선": (1.4, -1.4, 0.9)}
+
+SKELETON_JS = """
+const init = () => {
+const gd = document.getElementById('{plot_id}');
+const F = __FRAMES__, VIEWS = __VIEWS__, N = F.length;
+const up = {x: 0, y: 0, z: 1}, center = {x: 0, y: 0, z: 0};
+let t = 0, timer = null, rot = false, ang = -Math.PI / 2;
+const slider = document.getElementById('{plot_id}-slider'), lab = document.getElementById('{plot_id}-label');
+const playBtn = document.getElementById('{plot_id}-play'), rotBtn = document.getElementById('{plot_id}-rot');
+// Plotly 기본 animate 는 매 프레임 레이아웃 카메라로 되돌리므로 직접 재생한다.
+// 좌표만 바꾸는 restyle 은 레이아웃 카메라로 다시 그리므로, 사용자가 돌린 카메라(드래그를 끝낼 때 오는
+// plotly_relayout 이벤트, 시점 버튼 포함)를 레이아웃에 반영해 둔다. (react 는 프레임마다 장면을 새로 만들어
+// 재생 중 드래그가 끊기므로 쓰지 않음)
+let cam = JSON.parse(JSON.stringify(gd.layout.scene.camera));
+gd.on('plotly_relayout', e => { if (e['scene.camera']) cam = e['scene.camera']; });
+function show(k) {
+  t = k;
+  if (rot) { ang += Math.PI / 16; cam = {eye: {x: 2.1 * Math.cos(ang), y: 2.1 * Math.sin(ang), z: 0.5}, up, center}; }
+  gd.layout.scene.camera = cam;
+  Plotly.restyle(gd, {x: F[k].map(d => d.x), y: F[k].map(d => d.y), z: F[k].map(d => d.z)});
+  slider.value = k + 1; lab.textContent = '프레임 ' + (k + 1) + ' / ' + N;
+}
+// 드래그·휠 조작 중에는 프레임을 넘기지 않는다: 다시 그리기가 진행 중인 드래그를 끊으면 시점이 저장되지 않으므로.
+// 손을 떼면(mouseup → relayout 이벤트로 카메라 저장) 새 시점에서 이어서 재생된다.
+let holding = false, wheelAt = 0, release = null;
+gd.addEventListener('pointerdown', () => { holding = true; clearTimeout(release); }, true);
+// 손을 뗀 뒤 Plotly 가 카메라를 저장(plotly_relayout)하면 바로, 오지 않으면 0.5초 뒤 재개
+window.addEventListener('pointerup', () => { if (holding) release = setTimeout(() => { holding = false; }, 500); }, true);
+gd.on('plotly_relayout', e => { if (e['scene.camera'] && holding) { clearTimeout(release); holding = false; } });
+gd.addEventListener('wheel', () => { wheelAt = Date.now(); }, {capture: true, passive: true});
+function play() {
+  if (timer) return;
+  timer = setInterval(() => { if (!holding && Date.now() - wheelAt > 300) show((t + 1) % N); }, 180);
+  playBtn.textContent = '❚❚ 정지';
+}
+function stop() { clearInterval(timer); timer = null; playBtn.textContent = '▶ 재생'; }
+playBtn.onclick = () => timer ? stop() : play();
+rotBtn.onclick = () => { rot = !rot; rotBtn.classList.toggle('on', rot); if (rot) play(); };
+slider.oninput = () => { stop(); show(+slider.value - 1); };
+document.querySelectorAll('[data-view="{plot_id}"]').forEach(b => b.onclick = () => {
+  rot = false; rotBtn.classList.remove('on'); const [x, y, z] = VIEWS[b.dataset.name];
+  Plotly.relayout(gd, {'scene.camera': {eye: {x, y, z}, up, center}});
+});
+};
+// 재생 컨트롤은 그래프 아래에 있으므로 문서를 다 읽은 뒤 연결
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+"""
+
+def skeleton_html(seqs, title="", height=520):
+    """seqs: [(이름, 색, (16,24,3) 정규화 좌표)] -> 재생 중에도 시점을 바꿀 수 있는 3D 골격 애니메이션 HTML.
+    화면 축: x=좌우, y=깊이(z), z=위아래(y). 시점 버튼(정면/측면/위/대각선), 회전하며 재생, 드래그 회전을 지원한다."""
     def traces(t):
         out = []
         for name, color, a in seqs:
             xs, ys, zs = [], [], []
             for b0, b1 in BONES:
                 p, q = a[t, JI[b0]], a[t, JI[b1]]
-                xs += [p[0], q[0], None]; ys += [p[2], q[2], None]; zs += [p[1], q[1], None]
-            out.append(go.Scatter3d(x=xs, y=ys, z=zs, mode="lines", line=dict(color=color, width=6), name=name, hoverinfo="skip"))
-            out.append(go.Scatter3d(x=a[t, :, 0], y=a[t, :, 2], z=a[t, :, 1], mode="markers", marker=dict(size=3, color=color),
-                                    text=JOINTS, hovertemplate="%{text}<extra>" + name + "</extra>", showlegend=False))
+                xs += [float(p[0]), float(q[0]), None]; ys += [float(p[2]), float(q[2]), None]; zs += [float(p[1]), float(q[1]), None]
+            out.append(dict(x=xs, y=ys, z=zs))
+            out.append(dict(x=a[t, :, 0].tolist(), y=a[t, :, 2].tolist(), z=a[t, :, 1].tolist()))
         return out
+    t0 = traces(0); fig = go.Figure()
+    for (name, color, _), lines, pts in zip(seqs, t0[::2], t0[1::2]):
+        fig.add_scatter3d(**lines, mode="lines", line=dict(color=color, width=6), name=name, hoverinfo="skip")
+        fig.add_scatter3d(**pts, mode="markers", marker=dict(size=3, color=color), text=JOINTS,
+                          hovertemplate="%{text}<extra>" + name + "</extra>", showlegend=False)
     allp = np.concatenate([a.reshape(-1, 3) for _, _, a in seqs])
     lo, hi = np.nanmin(allp, 0), np.nanmax(allp, 0); c = (lo + hi) / 2; r = (hi - lo).max() / 2 * 1.05
-    rng = lambda k: [c[k] - r, c[k] + r]
-    fig = go.Figure(data=traces(0), frames=[go.Frame(data=traces(t), name=str(t)) for t in range(16)])
-    fig.update_layout(
-        title=title, height=height, margin=dict(l=0, r=0, t=40, b=0), legend=dict(orientation="h", y=1.02, x=0),
-        scene=dict(xaxis=dict(range=rng(0), title="좌우"), yaxis=dict(range=rng(2), title="깊이"), zaxis=dict(range=rng(1), title="위아래"),
-                   aspectmode="cube", camera=dict(eye=dict(x=0.2, y=-2.0, z=0.4), up=dict(x=0, y=0, z=1))),
-        updatemenus=[dict(type="buttons", x=0, y=0, xanchor="left", yanchor="bottom", buttons=[
-            dict(label="▶ 재생", method="animate", args=[None, dict(frame=dict(duration=180, redraw=True), fromcurrent=True, mode="immediate")]),
-            dict(label="❚❚ 정지", method="animate", args=[[None], dict(frame=dict(duration=0, redraw=False), mode="immediate")])])],
-        sliders=[dict(x=0.15, len=0.85, y=0, currentvalue=dict(prefix="프레임 "),
-                      steps=[dict(label=str(t + 1), method="animate", args=[[str(t)], dict(frame=dict(duration=0, redraw=True), mode="immediate")]) for t in range(16)])])
-    return fig
+    rng = lambda k: [float(c[k] - r), float(c[k] + r)]
+    x0, y0, z0 = VIEWS["정면"]
+    fig.update_layout(title=title, height=height, margin=dict(l=0, r=0, t=40, b=0), legend=dict(orientation="h", y=1.02, x=0), uirevision="keep",
+                      font=dict(family="Source Sans Pro, sans-serif"), paper_bgcolor="white",
+                      scene=dict(xaxis=dict(range=rng(0), title="좌우"), yaxis=dict(range=rng(2), title="깊이"), zaxis=dict(range=rng(1), title="위아래"),
+                                 aspectmode="cube", camera=dict(eye=dict(x=x0, y=y0, z=z0), up=dict(x=0, y=0, z=1))))
+    js = SKELETON_JS.replace("__FRAMES__", json.dumps([traces(t) for t in range(16)])).replace("__VIEWS__", json.dumps(VIEWS, ensure_ascii=False))
+    pid = "skel"
+    buttons = "".join(f'<button data-view="{pid}" data-name="{v}">{v}</button>' for v in VIEWS)
+    controls = f"""
+<style>
+  .sk {{font-family: 'Source Sans Pro', sans-serif; font-size: 14px; color: #31333f; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 4px 0}}
+  .sk button {{border: 1px solid #d6d5d0; background: #fff; border-radius: 6px; padding: 4px 10px; cursor: pointer; font: inherit}}
+  .sk button:hover {{border-color: #2a78d6; color: #2a78d6}}
+  .sk button.on {{background: #2a78d6; border-color: #2a78d6; color: #fff}}
+  .sk input[type=range] {{flex: 1; min-width: 120px; accent-color: #2a78d6}}
+</style>
+<div class="sk"><span>시점</span>{buttons}<button id="{pid}-rot">🔄 회전하며 재생</button></div>"""
+    player = f"""<div class="sk"><button id="{pid}-play">▶ 재생</button><input id="{pid}-slider" type="range" min="1" max="16" value="1">
+<span id="{pid}-label">프레임 1 / 16</span></div>"""
+    return controls + fig.to_html(full_html=False, include_plotlyjs="cdn", div_id=pid, config={"displaylogo": False},
+                                  post_script=js.replace("{plot_id}", pid)) + player
 
 # ---------------- 예측 ----------------
 def predict(model, X3):
@@ -233,7 +298,8 @@ def page_rq4():
     with c2:
         seqs = [(f"올바름 (n≈{info['pos_rate'] * models[e]['clips']:.0f})", C["true"], sk.get(f"{e}|{cn}|1")),
                 (f"오류 (n≈{(1 - info['pos_rate']) * models[e]['clips']:.0f})", C["false"], sk.get(f"{e}|{cn}|0"))]
-        st.plotly_chart(skeleton_fig([s for s in seqs if s[2] is not None], f"{e} · {cn}"), use_container_width=True)
+        components.html(skeleton_html([s for s in seqs if s[2] is not None], f"{e} · {cn}"), height=640)
+        st.caption("▶ 재생 중에도 그래프를 마우스로 드래그하면 시점을 돌릴 수 있습니다(휠: 확대/축소). '회전하며 재생'은 카메라가 몸 주위를 자동으로 돕니다.")
 
 def page_demo():
     st.header("🎯 라이브 데모 — 클립 JSON 업로드 → 조건별 판별")
@@ -279,7 +345,7 @@ def page_demo():
             st.metric("조건 일치", f"{(R['일치'] == '○').sum()} / {(R['일치'] != '').sum()}")
         st.caption("주의: 데모 모델은 41종 전체 클립으로 학습했으므로, AI Hub 학습 데이터 클립을 올리면 '본 적 있는' 데이터입니다. 일반화 성능은 '교차검증 bal_acc' 열(수행자 분리)을 보세요.")
     with c2:
-        st.plotly_chart(skeleton_fig([("업로드 클립", "#1c5cab", norm3d(X.astype(np.float32)).reshape(16, 24, 3))], f3.name), use_container_width=True)
+        components.html(skeleton_html([("업로드 클립", "#1c5cab", norm3d(X.astype(np.float32)).reshape(16, 24, 3))], f3.name), height=640)
 
 PAGES = {"🏠 개요": page_overview, "📦 데이터": page_data, "RQ1 · 조건별 성능": page_rq1, "RQ2 · 딥러닝 비교": page_rq2,
          "RQ3 · 2D vs 3D": page_rq3, "RQ4 · 어려운 조건": page_rq4, "🎯 라이브 데모": page_demo}
