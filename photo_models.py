@@ -39,6 +39,7 @@ def main():
         ids = np.where(ex == e)[0]; names = metas[ids[0]]["names"]
         O = observable(X3[ids][:, FRAMES].astype(np.float64))                       # (n,8,24,3)
         F = frame_features(O.reshape(-1, 24, 3))
+        F[:, F.std(0) < 1e-6] = 0   # 상수 특징(재구성으로 Back 이 목-허리 직선 위 → 등 각도 항상 180°) 제거: 표준화 시 0 근처로 나눠 극단값이 됨
         Y = np.repeat(np.array([metas[i]["vals"] for i in ids]), len(FRAMES), 0)
         G = np.repeat(np.array([metas[i]["z"] for i in ids]), len(FRAMES))
         hold = G == HOLDOUT.get(e, "__none__")

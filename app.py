@@ -29,14 +29,20 @@ st.set_page_config(page_title="헬스 자세 오류 판별", page_icon="🏋️"
 def csv(path):
     return pd.read_csv(path)
 
+# 캐시 키에 파일 수정 시각을 넣어, 모델 파일을 바꾸면 서버를 재시작하지 않아도 새로 읽는다
 @st.cache_data
+def _json(path, mtime):
+    return json.load(open(path, encoding="utf-8"))["models"]
+
 def load_models():
-    return json.load(open(APP / "models.json", encoding="utf-8"))["models"]
+    p = APP / "models.json"; return _json(str(p), p.stat().st_mtime)
 
 @st.cache_data
+def _npz(path, mtime):
+    z = np.load(path); return {k: z[k].astype(np.float32) for k in z.files}
+
 def load_skeletons():
-    z = np.load(APP / "mean_skeletons.npz")
-    return {k: z[k].astype(np.float32) for k in z.files}
+    p = APP / "mean_skeletons.npz"; return _npz(str(p), p.stat().st_mtime)
 
 def show_fig(name, caption=None):
     p = FIG / name
@@ -45,6 +51,22 @@ def show_fig(name, caption=None):
 def fmt(df, cols=None, digits=3):
     cols = cols or [c for c in df.columns if df[c].dtype.kind == "f"]
     return df.style.format({c: f"{{:.{digits}f}}" for c in cols})
+
+# 판별 결과처럼 꼭 보여야 하는 것은 markdown·내장 이미지로 그린다: st.dataframe·st.image 는 따로 받는 부품/파일이라
+# Cloud 연결이 불안정할 때(streamlit.app 정적 파일 요청이 간헐적으로 멈춤) 회색 상자로 남는다. markdown 은 기본 번들에 포함.
+def md_table(df, digits=2):
+    """DataFrame → markdown 표 문자열 (실수는 digits 자리, NaN 은 —)"""
+    cell = lambda v: "—" if isinstance(v, float) and np.isnan(v) else f"{v:.{digits}f}" if isinstance(v, (float, np.floating)) else str(v)
+    head = "| " + " | ".join(df.columns) + " |\n|" + "---|" * len(df.columns)
+    return head + "\n" + "\n".join("| " + " | ".join(cell(v) for v in r) + " |" for r in df.itertuples(index=False))
+
+def img_html(rgb, caption=""):
+    """RGB 배열 → 페이지에 직접 넣는 <img> (base64 JPEG, 추가 요청 없음)"""
+    import base64, io
+    from PIL import Image
+    buf = io.BytesIO(); Image.fromarray(rgb).save(buf, format="JPEG", quality=85)
+    cap = f"<div style='font-size:0.8rem;color:#808495;text-align:center'>{caption}</div>" if caption else ""
+    return f"<img src='data:image/jpeg;base64,{base64.b64encode(buf.getvalue()).decode()}' style='width:100%;border-radius:6px'/>{cap}"
 
 # ---------------- 골격 시각화 ----------------
 VIEWS = {"정면": (0.2, -2.0, 0.4), "측면": (2.0, 0.2, 0.4), "위": (0.1, -0.4, 2.1), "대각선": (1.4, -1.4, 0.9)}
@@ -354,7 +376,6 @@ def page_demo():
         fig.add_vline(x=0.5, line_dash="dash", line_color=C["muted"])
         fig.update_layout(height=80 + 60 * len(R), xaxis=dict(range=[0, 1], title="P(올바름)"), yaxis=dict(autorange="reversed"), margin=dict(l=10, r=10, t=10, b=10))
         st.plotly_chart(fig, use_container_width=True)
-        st.dataframe(fmt(R, ["P(올바름)", "교차검증 bal_acc"], 2), hide_index=True, width="stretch")
         if truth is not None and "일치" in R:
             st.metric("조건 일치", f"{(R['일치'] == '○').sum()} / {(R['일치'] != '').sum()}")
         z = m.get("holdout_performer")
@@ -366,6 +387,7 @@ def page_demo():
                        "일반화 성능은 '교차검증 bal_acc' 열(수행자 분리)을 보세요.")
     with c2:
         components.html(skeleton_html([("업로드 클립", "#1c5cab", norm3d(X.astype(np.float32)).reshape(16, 24, 3))], f3.name), height=640)
+    st.markdown(md_table(R))
 
 @st.cache_data(max_entries=3, show_spinner=False)
 def analyze_video(data):
@@ -441,20 +463,19 @@ def page_video():
         fig.add_vline(x=0.5, line_dash="dash", line_color=C["muted"])
         fig.update_layout(height=80 + 60 * len(R), xaxis=dict(range=[0, 1], title="P(올바름)"), yaxis=dict(autorange="reversed"), margin=dict(l=10, r=10, t=10, b=10))
         st.plotly_chart(fig, use_container_width=True)
-        st.dataframe(fmt(R, ["P(올바름)", "교차검증 bal_acc"], 2), hide_index=True, width="stretch")
         st.caption(f"영상용 모델: 척추 점(Neck·Back·Waist)처럼 영상에서 직접 볼 수 없는 관절을 영상과 같은 공식으로 재구성한 AI Hub 좌표로 학습 "
                    f"(교차검증 bal_acc 는 이 모델 기준). 주요 관절 평균 신뢰도 {vis:.2f} · 골반 방향을 AI Hub {e} 평균({m['yaw_mean']:.0f}°, "
                    f"표준편차 {m['yaw_sd']:.0f}°)으로 정렬")
     with c2:
         components.html(skeleton_html([("영상에서 추정한 골격", "#1c5cab", norm3d(X.astype(np.float32)).reshape(16, 24, 3))], f"{e} · {up.name}"), height=640)
+    st.markdown(md_table(R))
     st.markdown("**검출 확인** — 분석에 쓴 16프레임 중 4장 (파란 선이 몸과 맞지 않으면 결과를 믿기 어렵습니다)")
     cols = st.columns(4)
     for col, k in zip(cols, [0, 5, 10, 15]):
-        col.image(thumbs[idx[k]], caption=f"{idx[k] / fps:.1f}초", width="stretch")
+        col.markdown(img_html(thumbs[idx[k]], f"{idx[k] / fps:.1f}초"), unsafe_allow_html=True)
 
-@st.cache_data
 def load_photo_models():
-    return json.load(open(APP / "photo_models.json", encoding="utf-8"))["models"]
+    p = APP / "photo_models.json"; return _json(str(p), p.stat().st_mtime)
 
 @st.cache_data(max_entries=5, show_spinner=False)
 def analyze_photo(data):
@@ -500,10 +521,10 @@ AI Hub 클립의 프레임을 한 장씩 학습한 모델로, 조건마다 **사
     rows = []
     for c in m["conditions"]:
         p = 1 / (1 + np.exp(-(zc @ np.array(c["coef"]) + c["intercept"]))); acc = c["cv_bal_acc"]
-        level = "✅ 사진으로 판별 가능" if acc >= PHOTO_OK else "⚠️ 참고만" if acc >= PHOTO_MAYBE else "⛔ 사진으로 판별 불가(동작 필요)"
-        rows.append({"조건": c["name"], "사진 판별 가능도": level, "P(올바름)": p if acc >= PHOTO_MAYBE else np.nan,
-                     "예측": ("✅ 올바름" if p >= .5 else "❌ 오류") if acc >= PHOTO_MAYBE else "—", "사진 교차검증 bal_acc": acc,
-                     "영상 교차검증 bal_acc": next(x["cv_bal_acc"] for x in models[e]["video"]["conditions"] if x["name"] == c["name"])})
+        level = "✅ 가능" if acc >= PHOTO_OK else "⚠️ 참고만" if acc >= PHOTO_MAYBE else "⛔ 어려움"
+        rows.append({"조건": c["name"], "사진 판별": level, "P(올바름)": p if acc >= PHOTO_MAYBE else np.nan,
+                     "예측": ("✅ 올바름" if p >= .5 else "❌ 오류") if acc >= PHOTO_MAYBE else "—", "사진 정확도": acc,
+                     "영상 정확도": next(x["cv_bal_acc"] for x in models[e]["video"]["conditions"] if x["name"] == c["name"])})
     R = pd.DataFrame(rows)
     far = np.abs(z) > 3; fn = [n.replace("의 평균", "") for n in feature_names()[:89]]   # 한 프레임 특징 = 좌표 72 + 각도 17 (평균 항목과 같은 순서)
     top = [i for i in np.argsort(-np.abs(z)) if far[i]][:5]; detail = ", ".join(f"{fn[i]} ({z[i]:+.1f}σ)" for i in top)
@@ -513,13 +534,19 @@ AI Hub 클립의 프레임을 한 장씩 학습한 모델로, 조건마다 **사
                  f"(학습에 쓰지 않은 AI Hub 프레임에서도 3개 이상이면 일치율이 0.76 → 0.63~0.68 로 떨어졌습니다).\n\n크게 다른 부분: {detail}")
     elif far.sum() > 0:
         st.info(f"학습 범위를 벗어난 특징 {far.sum()}개: {detail}")
-    c1, c2 = st.columns([3, 2])
+    c1, c2 = st.columns([1, 2])
     with c1:
-        st.dataframe(fmt(R, ["P(올바름)", "사진 교차검증 bal_acc", "영상 교차검증 bal_acc"], 2), hide_index=True, width="stretch")
-        st.caption("사진 교차검증 bal_acc: AI Hub 프레임 한 장씩으로 학습·평가(수행자 분리). 같은 조건의 영상(16프레임) 수치와 비교하면 '움직임 정보'가 얼마나 필요한지 보입니다. "
-                   f"주요 관절 신뢰도 {vis:.2f}")
+        st.markdown(img_html(thumb, f"검출된 관절 · 주요 관절 신뢰도 {vis:.2f}"), unsafe_allow_html=True)
     with c2:
-        st.image(thumb, caption="검출된 관절", width="stretch")
+        judged = R[R["예측"] != "—"]
+        st.markdown(f"#### {e} — 판별한 조건 {len(judged)}개 중 **오류 {int((judged['예측'] == '❌ 오류').sum())}개**")
+        for r in judged.itertuples(index=False):
+            st.markdown(f"- {r[3]} **{r[0]}** (P(올바름) {r[2]:.2f}, 사진 정확도 {r[4]:.2f})")
+        hard = R[R["예측"] == "—"]["조건"].tolist()
+        if hard: st.markdown("- ⛔ 사진으로 판별 어려움: " + ", ".join(hard))
+    st.markdown(md_table(R))
+    st.caption("사진 정확도: AI Hub 프레임 한 장씩으로 학습·평가한 수행자 분리 교차검증 balanced accuracy. "
+               "영상 정확도(16프레임)와 비교하면 '움직임 정보'가 얼마나 필요한지 보입니다. ✅ ≥ 0.75, ⚠️ 0.65~0.75, ⛔ < 0.65")
 
 PAGES = {"🏠 개요": page_overview, "📦 데이터": page_data, "RQ1 · 조건별 성능": page_rq1, "RQ2 · 딥러닝 비교": page_rq2,
          "RQ3 · 2D vs 3D": page_rq3, "RQ4 · 어려운 조건": page_rq4, "🎯 라이브 데모": page_demo, "🎬 영상 판별 (실험적)": page_video,
