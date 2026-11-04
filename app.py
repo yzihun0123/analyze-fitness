@@ -7,24 +7,19 @@
   figures/         analyze_results.py 가 만든 그림
 라이브 데모는 사용자가 업로드한 JSON 을 메모리에서만 처리한다(저장하지 않음).
 """
-import json
+import json, os
 from pathlib import Path
 import numpy as np, pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 import streamlit.components.v1 as components
-from build_cache import JOINTS
+from build_cache import JOINTS, BONES
 from exp_seq import norm3d, angles3d, summary
 
 BASE = Path(__file__).parent
 RES, TAB, FIG, APP = BASE / "results", BASE / "results" / "tables", BASE / "figures", BASE / "app_data"
 C = {"logreg": "#2a78d6", "cnn": "#eb6834", "gru": "#1baf7a", "true": "#2a78d6", "false": "#eb6834", "muted": "#a3a29c"}
 MN = {"logreg": "요약특징+LogReg", "cnn": "1D-CNN", "gru": "GRU"}
-BONES = [("Neck", "Nose"), ("Nose", "Left Eye"), ("Nose", "Right Eye"), ("Left Eye", "Left Ear"), ("Right Eye", "Right Ear"),
-         ("Neck", "Left Shoulder"), ("Neck", "Right Shoulder"), ("Left Shoulder", "Left Elbow"), ("Left Elbow", "Left Wrist"),
-         ("Left Wrist", "Left Palm"), ("Right Shoulder", "Right Elbow"), ("Right Elbow", "Right Wrist"), ("Right Wrist", "Right Palm"),
-         ("Neck", "Back"), ("Back", "Waist"), ("Waist", "Left Hip"), ("Waist", "Right Hip"), ("Left Hip", "Left Knee"),
-         ("Left Knee", "Left Ankle"), ("Left Ankle", "Left Foot"), ("Right Hip", "Right Knee"), ("Right Knee", "Right Ankle"), ("Right Ankle", "Right Foot")]
 JI = {j: i for i, j in enumerate(JOINTS)}
 
 st.set_page_config(page_title="헬스 자세 오류 판별", page_icon="🏋️", layout="wide")
@@ -145,11 +140,30 @@ def skeleton_html(seqs, title="", height=520):
                                   post_script=js.replace("{plot_id}", pid)) + player
 
 # ---------------- 예측 ----------------
-def predict(model, X3):
-    """X3: (1,16,24,3) 원좌표 -> 조건별 P(올바름)"""
+def zscore(model, X3):
+    """X3: (1,16,24,3) 원좌표 -> 학습 분포 기준 표준화 특징 (267,)"""
     f = summary(np.concatenate([norm3d(X3), angles3d(X3.astype(np.float64)).astype(np.float32)], -1))[0]
-    z = (f - np.array(model["mean"])) / np.array(model["scale"])
+    return (f - np.array(model["mean"])) / np.array(model["scale"])
+
+def predict(model, X3, clip=None):
+    """X3: (1,16,24,3) 원좌표 -> 조건별 P(올바름). clip: 표준화 값을 ±clip 으로 잘라 학습 범위 밖 극단값의 영향을 제한(영상용)"""
+    z = zscore(model, X3)
+    if clip: z = np.clip(z, -clip, clip)
     return [1 / (1 + np.exp(-(z @ np.array(c["coef"]) + c["intercept"]))) for c in model["conditions"]]
+
+KO_JOINT = {"Nose": "코", "Left Eye": "왼눈", "Right Eye": "오른눈", "Left Ear": "왼귀", "Right Ear": "오른귀", "Left Shoulder": "왼어깨",
+            "Right Shoulder": "오른어깨", "Left Elbow": "왼팔꿈치", "Right Elbow": "오른팔꿈치", "Left Wrist": "왼손목", "Right Wrist": "오른손목",
+            "Left Hip": "왼골반", "Right Hip": "오른골반", "Left Knee": "왼무릎", "Right Knee": "오른무릎", "Left Ankle": "왼발목",
+            "Right Ankle": "오른발목", "Neck": "목", "Left Palm": "왼손", "Right Palm": "오른손", "Back": "등", "Waist": "허리",
+            "Left Foot": "왼발", "Right Foot": "오른발"}
+
+def feature_names():
+    """summary 특징 267개의 사람이 읽는 이름 (평균·흔들림·움직임 범위 × [관절 좌표 72 + 관절각 15 + 귀-어깨 2])"""
+    from exp_seq import ANGLES
+    ax = {"x": "좌우 위치", "y": "높이", "z": "앞뒤 위치"}
+    base = [f"{KO_JOINT[j]} {ax[a]}" for j in JOINTS for a in "xyz"]
+    base += [f"{KO_JOINT[b]} 각도({KO_JOINT[a]}-{KO_JOINT[b]}-{KO_JOINT[c]})" for a, b, c in ANGLES] + ["왼귀-어깨 거리", "오른귀-어깨 거리"]
+    return [f"{n}의 {s}" for s in ["평균", "흔들림", "움직임 범위"] for n in base]
 
 def parse_3d(raw):
     fr = json.loads(raw)["frames"]
@@ -303,7 +317,7 @@ def page_rq4():
 
 def page_demo():
     st.header("🎯 라이브 데모 — 클립 JSON 업로드 → 조건별 판별")
-    st.markdown("AI Hub 라벨의 **3D 파일(`D*-*-*-3d.json`)** 을 올리면 운동별 LogReg(3D 좌표+관절각, 41종 전체 학습)로 조건마다 P(올바름)를 계산합니다. "
+    st.markdown("AI Hub 라벨의 **3D 파일(`D*-*-*-3d.json`)** 을 올리면 운동별 LogReg(3D 좌표+관절각)로 조건마다 P(올바름)를 계산합니다. "
                 "같은 이름의 **2D 파일(`D*-*-*.json`)** 도 함께 올리면 운동명을 자동 인식하고 정답 라벨과 비교합니다.")
     st.caption("업로드한 파일은 이 세션의 메모리에서만 처리되며 저장되지 않습니다. 원본 데이터는 저장소에 포함되어 있지 않습니다.")
     models = load_models()
@@ -343,12 +357,172 @@ def page_demo():
         st.dataframe(fmt(R, ["P(올바름)", "교차검증 bal_acc"], 2), hide_index=True, width="stretch")
         if truth is not None and "일치" in R:
             st.metric("조건 일치", f"{(R['일치'] == '○').sum()} / {(R['일치'] != '').sum()}")
-        st.caption("주의: 데모 모델은 41종 전체 클립으로 학습했으므로, AI Hub 학습 데이터 클립을 올리면 '본 적 있는' 데이터입니다. 일반화 성능은 '교차검증 bal_acc' 열(수행자 분리)을 보세요.")
+        z = m.get("holdout_performer")
+        if z:
+            st.caption(f"이 운동의 데모 모델은 **수행자 {z}를 학습에서 제외**했습니다. {z}의 클립(예시 파일)은 처음 보는 사람의 자세입니다. "
+                       "다른 수행자의 클립은 학습에 쓰인 데이터이므로, 일반화 성능은 '교차검증 bal_acc' 열(수행자 분리)을 보세요.")
+        else:
+            st.caption("주의: 이 운동의 데모 모델은 전체 클립으로 학습했으므로, AI Hub 클립을 올리면 '본 적 있는' 데이터입니다. "
+                       "일반화 성능은 '교차검증 bal_acc' 열(수행자 분리)을 보세요.")
     with c2:
         components.html(skeleton_html([("업로드 클립", "#1c5cab", norm3d(X.astype(np.float32)).reshape(16, 24, 3))], f3.name), height=640)
 
+@st.cache_data(max_entries=3, show_spinner=False)
+def analyze_video(data):
+    """영상 바이트 → MediaPipe world landmarks (T,33,3), 2D (T,33,2), fps, 확인용 썸네일. 같은 영상은 다시 계산하지 않음"""
+    import video_pose as vp
+    frames, fps = vp.read_video(data)
+    W, V, P2 = vp.detect(frames, fps)
+    thumbs = [vp.thumbnail(f, p) for f, p in zip(frames, P2)]
+    return W, V, fps, thumbs
+
+def page_video():
+    st.header("🎬 영상 판별 (실험적) — 운동 영상 업로드 → 조건별 판별")
+    st.warning("""**실험적 기능입니다.** 영상에서 MediaPipe 로 3D 관절을 추정해 AI Hub 24관절로 바꾼 뒤 같은 모델로 판별합니다.
+모델은 AI Hub 의 **5대 카메라로 복원한 3D 좌표**로 학습했고, 영상은 **카메라 1대로 추정한 3D** 라 좌표의 성질이 다릅니다.
+관절 정의는 AI Hub 데이터로 측정한 위치에 맞췄고, 영상에서 볼 수 없는 척추 점(Neck·Back·Waist)에 기대지 않도록 **영상용 모델을 따로 학습**했습니다.
+표의 교차검증 bal_acc 는 그 모델을 AI Hub 데이터로 평가한 값이며, **MediaPipe 의 관절 추정 오차는 반영되지 않았습니다**(정답 라벨이 있는 영상이 없어 검증 불가).""")
+    with st.expander("촬영 팁 (정확도에 큰 영향)", expanded=False):
+        st.markdown("""- **서서 하는 운동** 권장 (덤벨 컬·바벨 컬·스쿼트·런지·오버 헤드 프레스·사이드 레터럴 레이즈 등). 누워서 하는 운동은 AI Hub 의 몸 방향이 일정하지 않아 정렬이 불안정합니다.
+- **전신이 화면에 다 나오게**, 한 사람만, 카메라는 **수평으로 고정** (MediaPipe 의 '위쪽'은 카메라 기준이라 기울면 몸이 기운 것으로 계산됩니다).
+- 정면보다 **비스듬한 각도(약 45°)** 가 깊이 추정에 유리합니다. 영상은 앞 8초까지만 분석합니다(서버 메모리 제한).
+- 아래 구간 슬라이더로 **동작 1회**(AI Hub 클립은 원본 31장 중 16장, 약 1~2초 분량으로 추정)를 고르세요.""")
+    models = load_models()
+    c1, c2 = st.columns([3, 2])
+    up = c1.file_uploader("운동 영상 (mp4 / mov / avi)", type=["mp4", "mov", "avi", "m4v"], key="vid")
+    names = sorted(models)
+    e = c2.selectbox("어떤 운동인가요?", names, index=names.index("덤벨 컬"), key="vid_ex")
+    if up is None:
+        st.info("영상을 업로드하세요."); return
+    try:
+        import mediapipe  # noqa: F401  설치 여부 확인
+        import video_pose as vp
+        assert os.path.exists(vp.MODEL), f"포즈 모델 파일이 없습니다: {vp.MODEL}"
+    except Exception as err:
+        st.error("이 서버에서는 영상 분석(MediaPipe)을 쓸 수 없습니다. 배포 안정성을 위해 Cloud 배포본에는 넣지 않았습니다 — "
+                 f"**로컬 실행**(`streamlit run app.py`)에서 사용하세요.\n\n세부: {err}"); return
+    with st.spinner("관절 검출 중… (영상 길이에 따라 수십 초)"):
+        try:
+            W, V, fps, thumbs = analyze_video(up.getvalue())
+        except Exception as err:
+            st.error(f"영상 처리 실패: {err}"); return
+    import video_pose as vp
+    T = len(W); found = np.isfinite(W).all((1, 2))
+    st.caption(f"분석 프레임 {T}장 ({T / fps:.1f}초, {fps:.0f}fps) · 사람 검출 {found.mean():.0%}")
+    if found.sum() < 8:
+        st.error("사람이 거의 검출되지 않았습니다. 전신이 보이게 다시 찍어 주세요."); return
+    t0, t1 = st.slider("분석 구간 (초) — 동작 1회", 0.0, round(T / fps, 1), (0.0, round(T / fps, 1)), step=0.1, key="vid_seg")
+    try:
+        idx = vp.sample16(W, int(t0 * fps), min(T - 1, int(t1 * fps)))
+    except ValueError as err:
+        st.error(str(err)); return
+    m = models[e]; mv = m["video"]   # 영상용 모델: AI Hub 데이터를 영상으로 관측 가능한 관절만으로 재구성해 학습
+    X = vp.align_yaw(vp.to_aihub(W[idx]), m["yaw_mean"])[None]
+    vis = V[idx][:, vp.KEY_MP].mean()
+    P = predict(mv, X, clip=3)
+    if vis < 0.6: st.warning(f"주요 관절 신뢰도가 낮습니다({vis:.2f}). 가려진 관절이 있으면 결과를 믿기 어렵습니다.")
+    # 학습 분포에서 벗어난 정도: |z|>3 특징이 많으면 결과가 그 차이에 끌려갈 수 있음 (Firefly 생성 영상: 23개 → 판정이 발 간격·고개 방향에 좌우됨)
+    z = zscore(mv, X); far = np.abs(z) > 3; names_f = feature_names()
+    top = [i for i in np.argsort(-np.abs(z)) if far[i]][:5]
+    # 기준 근거: 학습에서 뺀 AI Hub 수행자 128클립에서 범위 밖 특징 0~2개 → 조건 일치율 0.92, 3~9개 → 0.86, 10~19개 → 0.69
+    detail = ", ".join(f"{names_f[i]} ({z[i]:+.1f}σ)" for i in top)
+    if far.sum() >= 10:
+        st.error(f"**이 영상은 학습 데이터(AI Hub)와 자세·촬영 조건이 크게 다릅니다** — 267개 특징 중 **{far.sum()}개**가 학습 범위(±3 표준편차)를 벗어났습니다. "
+                 "아래 판정은 이 차이에 끌려갔을 수 있어 **신뢰하기 어렵습니다** (학습에 쓰지 않은 AI Hub 클립에서도 이 개수가 10개 이상이면 "
+                 f"조건 일치율이 0.92 → 0.69 로 떨어졌습니다).\n\n크게 다른 부분: {detail}")
+    elif far.sum() >= 3:
+        st.info(f"학습 범위를 벗어난 특징 {far.sum()}개 (AI Hub 검증 클립 기준 3~9개일 때 조건 일치율 약 0.86): {detail}")
+    R = pd.DataFrame([{"조건": c["name"], "P(올바름)": p, "예측": "✅ 올바름" if p >= 0.5 else "❌ 오류", "교차검증 bal_acc": c["cv_bal_acc"]}
+                      for c, p in zip(mv["conditions"], P)])
+    c1, c2 = st.columns([2, 3])
+    with c1:
+        fig = go.Figure(go.Bar(x=R["P(올바름)"], y=R["조건"], orientation="h", marker_color=[C["true"] if p >= .5 else C["false"] for p in R["P(올바름)"]],
+                               hovertemplate="%{y}<br>P(올바름) %{x:.2f}<extra></extra>"))
+        fig.add_vline(x=0.5, line_dash="dash", line_color=C["muted"])
+        fig.update_layout(height=80 + 60 * len(R), xaxis=dict(range=[0, 1], title="P(올바름)"), yaxis=dict(autorange="reversed"), margin=dict(l=10, r=10, t=10, b=10))
+        st.plotly_chart(fig, use_container_width=True)
+        st.dataframe(fmt(R, ["P(올바름)", "교차검증 bal_acc"], 2), hide_index=True, width="stretch")
+        st.caption(f"영상용 모델: 척추 점(Neck·Back·Waist)처럼 영상에서 직접 볼 수 없는 관절을 영상과 같은 공식으로 재구성한 AI Hub 좌표로 학습 "
+                   f"(교차검증 bal_acc 는 이 모델 기준). 주요 관절 평균 신뢰도 {vis:.2f} · 골반 방향을 AI Hub {e} 평균({m['yaw_mean']:.0f}°, "
+                   f"표준편차 {m['yaw_sd']:.0f}°)으로 정렬")
+    with c2:
+        components.html(skeleton_html([("영상에서 추정한 골격", "#1c5cab", norm3d(X.astype(np.float32)).reshape(16, 24, 3))], f"{e} · {up.name}"), height=640)
+    st.markdown("**검출 확인** — 분석에 쓴 16프레임 중 4장 (파란 선이 몸과 맞지 않으면 결과를 믿기 어렵습니다)")
+    cols = st.columns(4)
+    for col, k in zip(cols, [0, 5, 10, 15]):
+        col.image(thumbs[idx[k]], caption=f"{idx[k] / fps:.1f}초", width="stretch")
+
+@st.cache_data
+def load_photo_models():
+    return json.load(open(APP / "photo_models.json", encoding="utf-8"))["models"]
+
+@st.cache_data(max_entries=5, show_spinner=False)
+def analyze_photo(data):
+    import video_pose as vp
+    img, W, V, P2 = vp.detect_image(data)
+    return W, V, vp.thumbnail(img, P2, 480)
+
+# 사진 판별 기준 (photo_models.py 결과로 정함): 한 프레임 교차검증 bal_acc 와 학습 범위 밖 특징 수
+PHOTO_OK, PHOTO_MAYBE = 0.75, 0.65
+PHOTO_FAR_WARN = 3   # 학습에서 뺀 수행자 프레임: 범위 밖 0개 → 일치율 0.76, 1~2개 0.74, 3~5개 0.68, 6~10개 0.63
+
+def page_photo():
+    st.header("📷 사진 판별 (실험적) — 운동 사진 한 장 → 자세 조건 판별")
+    st.warning("""**실험적 기능입니다.** 사진 한 장에는 '움직임'이 없어서 **반동·팔꿈치 고정·이완 시 긴장 유지처럼 동작으로 정의되는 조건은 판별할 수 없습니다.**
+AI Hub 클립의 프레임을 한 장씩 학습한 모델로, 조건마다 **사진으로 판별 가능한 정도(수행자 분리 교차검증)** 를 함께 보여 줍니다.
+영상 판별과 같이 MediaPipe 로 관절을 추정하므로 그 오차는 반영되지 않았습니다.""")
+    with st.expander("촬영 팁", expanded=False):
+        st.markdown("- 전신이 다 나오게, 한 사람만, 카메라 수평 · 서서 하는 운동 권장 · 판별하고 싶은 **자세의 순간**(예: 스쿼트 가장 낮은 지점)을 찍으세요.")
+    pm, models = load_photo_models(), load_models()
+    c1, c2 = st.columns([3, 2])
+    up = c1.file_uploader("운동 사진 (jpg / png)", type=["jpg", "jpeg", "png", "webp"], key="photo")
+    names = sorted(pm); e = c2.selectbox("어떤 운동인가요?", names, index=names.index("덤벨 컬"), key="photo_ex")
+    if up is None:
+        st.info("사진을 업로드하세요."); return
+    try:
+        import mediapipe  # noqa: F401
+        import video_pose as vp
+        assert os.path.exists(vp.MODEL), f"포즈 모델 파일이 없습니다: {vp.MODEL}"
+    except Exception as err:
+        st.error(f"이 서버에서는 사진 분석(MediaPipe)을 쓸 수 없습니다 — **로컬 실행**에서 사용하세요.\n\n세부: {err}"); return
+    with st.spinner("관절 검출 중…"):
+        try:
+            W, V, thumb = analyze_photo(up.getvalue())
+        except Exception as err:
+            st.error(f"사진 처리 실패: {err}"); return
+    if W is None:
+        st.error("사람이 검출되지 않았습니다. 전신이 보이는 사진을 올려 주세요."); return
+    from photo_models import frame_features
+    m = pm[e]; A = vp.align_yaw(vp.to_aihub(W[None]), models[e]["yaw_mean"])         # (1,24,3)
+    z = (frame_features(A)[0] - np.array(m["mean"])) / np.array(m["scale"])
+    zc = np.clip(z, -3, 3); vis = V[vp.KEY_MP].mean()
+    rows = []
+    for c in m["conditions"]:
+        p = 1 / (1 + np.exp(-(zc @ np.array(c["coef"]) + c["intercept"]))); acc = c["cv_bal_acc"]
+        level = "✅ 사진으로 판별 가능" if acc >= PHOTO_OK else "⚠️ 참고만" if acc >= PHOTO_MAYBE else "⛔ 사진으로 판별 불가(동작 필요)"
+        rows.append({"조건": c["name"], "사진 판별 가능도": level, "P(올바름)": p if acc >= PHOTO_MAYBE else np.nan,
+                     "예측": ("✅ 올바름" if p >= .5 else "❌ 오류") if acc >= PHOTO_MAYBE else "—", "사진 교차검증 bal_acc": acc,
+                     "영상 교차검증 bal_acc": next(x["cv_bal_acc"] for x in models[e]["video"]["conditions"] if x["name"] == c["name"])})
+    R = pd.DataFrame(rows)
+    far = np.abs(z) > 3; fn = [n.replace("의 평균", "") for n in feature_names()[:89]]   # 한 프레임 특징 = 좌표 72 + 각도 17 (평균 항목과 같은 순서)
+    top = [i for i in np.argsort(-np.abs(z)) if far[i]][:5]; detail = ", ".join(f"{fn[i]} ({z[i]:+.1f}σ)" for i in top)
+    if vis < 0.6: st.warning(f"주요 관절 신뢰도가 낮습니다({vis:.2f}). 가려진 관절이 있으면 결과를 믿기 어렵습니다.")
+    if far.sum() >= PHOTO_FAR_WARN:
+        st.error(f"**이 사진은 학습 데이터와 자세·촬영 조건이 다릅니다** — 89개 특징 중 **{far.sum()}개**가 학습 범위(±3σ)를 벗어나 판정을 신뢰하기 어렵습니다 "
+                 f"(학습에 쓰지 않은 AI Hub 프레임에서도 3개 이상이면 일치율이 0.76 → 0.63~0.68 로 떨어졌습니다).\n\n크게 다른 부분: {detail}")
+    elif far.sum() > 0:
+        st.info(f"학습 범위를 벗어난 특징 {far.sum()}개: {detail}")
+    c1, c2 = st.columns([3, 2])
+    with c1:
+        st.dataframe(fmt(R, ["P(올바름)", "사진 교차검증 bal_acc", "영상 교차검증 bal_acc"], 2), hide_index=True, width="stretch")
+        st.caption("사진 교차검증 bal_acc: AI Hub 프레임 한 장씩으로 학습·평가(수행자 분리). 같은 조건의 영상(16프레임) 수치와 비교하면 '움직임 정보'가 얼마나 필요한지 보입니다. "
+                   f"주요 관절 신뢰도 {vis:.2f}")
+    with c2:
+        st.image(thumb, caption="검출된 관절", width="stretch")
+
 PAGES = {"🏠 개요": page_overview, "📦 데이터": page_data, "RQ1 · 조건별 성능": page_rq1, "RQ2 · 딥러닝 비교": page_rq2,
-         "RQ3 · 2D vs 3D": page_rq3, "RQ4 · 어려운 조건": page_rq4, "🎯 라이브 데모": page_demo}
+         "RQ3 · 2D vs 3D": page_rq3, "RQ4 · 어려운 조건": page_rq4, "🎯 라이브 데모": page_demo, "🎬 영상 판별 (실험적)": page_video,
+         "📷 사진 판별 (실험적)": page_photo}
 with st.sidebar:
     st.markdown("### 헬스 자세 오류 판별")
     page = st.radio("페이지", list(PAGES), label_visibility="collapsed")
