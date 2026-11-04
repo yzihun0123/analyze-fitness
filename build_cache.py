@@ -16,6 +16,12 @@ JOINTS = ["Nose", "Left Eye", "Right Eye", "Left Ear", "Right Ear", "Left Should
           "Right Knee", "Left Ankle", "Right Ankle", "Neck", "Left Palm", "Right Palm", "Back", "Waist",
           "Left Foot", "Right Foot"]
 VIEWS = ["view1", "view2", "view3", "view4", "view5"]
+# 골격 그리기용 관절 연결 (app.py, make_videos.py)
+BONES = [("Neck", "Nose"), ("Nose", "Left Eye"), ("Nose", "Right Eye"), ("Left Eye", "Left Ear"), ("Right Eye", "Right Ear"),
+         ("Neck", "Left Shoulder"), ("Neck", "Right Shoulder"), ("Left Shoulder", "Left Elbow"), ("Left Elbow", "Left Wrist"),
+         ("Left Wrist", "Left Palm"), ("Right Shoulder", "Right Elbow"), ("Right Elbow", "Right Wrist"), ("Right Wrist", "Right Palm"),
+         ("Neck", "Back"), ("Back", "Waist"), ("Waist", "Left Hip"), ("Waist", "Right Hip"), ("Left Hip", "Left Knee"),
+         ("Left Knee", "Left Ankle"), ("Left Ankle", "Left Foot"), ("Right Hip", "Right Knee"), ("Right Knee", "Right Ankle"), ("Right Ankle", "Right Foot")]
 
 def summary_feat(a):
     """(16,24,3) -> analyze_fitness.feat_3d 와 같은 216 특징 (이상값 판정용)."""
