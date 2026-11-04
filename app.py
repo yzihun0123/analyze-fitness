@@ -145,7 +145,7 @@ def page_rq1():
     fig.update_layout(height=900, xaxis=dict(range=[0.4, 1], title="조건 평균 (수행자 분리 8-fold)"), margin=dict(l=10, r=10, t=10, b=10),
                       legend=dict(orientation="h", y=1.01, x=0), bargap=0.3)
     c1, c2 = st.columns([3, 2])
-    with c1: st.plotly_chart(fig, width="stretch")
+    with c1: st.plotly_chart(fig, use_container_width=True)
     with c2:
         e = st.selectbox("운동 선택", list(ex.index[::-1]))
         d = A[A.exercise == e][["condition", "pos_rate", "majority", "acc", "bal_acc", "auroc"]].merge(
@@ -177,7 +177,7 @@ def page_rq2():
                         hovertemplate="%{y}<br>" + MN[k] + " %{x:.3f}<extra></extra>")
     fig.update_layout(height=780, xaxis=dict(title="balanced accuracy", range=[0.5, 1]), yaxis=dict(autorange="reversed"),
                       legend=dict(orientation="h", y=1.02, x=0), margin=dict(l=10, r=10, t=10, b=10))
-    st.plotly_chart(fig, width="stretch")
+    st.plotly_chart(fig, use_container_width=True)
     st.caption("★ = 어려운 조건(손목 중립·이완 시 긴장 유지·숄더패킹). CNN·GRU는 3시드 앙상블.")
     st.subheader("조건별 비교와 95% 신뢰구간 (수행자 부트스트랩 1000회, LogReg 대비)")
     cols = ["exercise", "condition", "majority", "logreg_bal_acc", "cnn_bal_acc", "gru_bal_acc", "cnn-logreg_CI", "gru-logreg_CI"]
@@ -199,7 +199,7 @@ def page_rq3():
         fig.add_bar(y=order["유형"], x=order[k], name=k, orientation="h", marker_color=col, hovertemplate="%{y}<br>" + k + " %{x:.3f}<extra></extra>")
     fig.update_layout(barmode="group", height=720, xaxis=dict(range=[0.55, 0.9], title="balanced accuracy (LogReg, 41종, 같은 클립)"),
                       legend=dict(orientation="h", y=1.02, x=0), margin=dict(l=10, r=10, t=10, b=10))
-    st.plotly_chart(fig, width="stretch")
+    st.plotly_chart(fig, use_container_width=True)
     st.dataframe(fmt(v), hide_index=True, width="stretch")
     st.markdown("- 같은 클립에서 **2D 5시점 결합이 3D보다 약간 높음** — 3D는 다시점 2D에서 복원된 값으로 보이며 복원 오차가 더해진 것으로 해석(생성 방식은 문서 미기재).\n"
                 "- **카메라 1대**로는 0.02~0.05 하락, 손목·긴장 유지 조건에서 더 크게 하락. 시점 A~E의 카메라 위치는 문서에 없음.")
@@ -233,7 +233,7 @@ def page_rq4():
     with c2:
         seqs = [(f"올바름 (n≈{info['pos_rate'] * models[e]['clips']:.0f})", C["true"], sk.get(f"{e}|{cn}|1")),
                 (f"오류 (n≈{(1 - info['pos_rate']) * models[e]['clips']:.0f})", C["false"], sk.get(f"{e}|{cn}|0"))]
-        st.plotly_chart(skeleton_fig([s for s in seqs if s[2] is not None], f"{e} · {cn}"), width="stretch")
+        st.plotly_chart(skeleton_fig([s for s in seqs if s[2] is not None], f"{e} · {cn}"), use_container_width=True)
 
 def page_demo():
     st.header("🎯 라이브 데모 — 클립 JSON 업로드 → 조건별 판별")
@@ -273,13 +273,13 @@ def page_demo():
                                hovertemplate="%{y}<br>P(올바름) %{x:.2f}<extra></extra>"))
         fig.add_vline(x=0.5, line_dash="dash", line_color=C["muted"])
         fig.update_layout(height=80 + 60 * len(R), xaxis=dict(range=[0, 1], title="P(올바름)"), yaxis=dict(autorange="reversed"), margin=dict(l=10, r=10, t=10, b=10))
-        st.plotly_chart(fig, width="stretch")
+        st.plotly_chart(fig, use_container_width=True)
         st.dataframe(fmt(R, ["P(올바름)", "교차검증 bal_acc"], 2), hide_index=True, width="stretch")
         if truth is not None and "일치" in R:
             st.metric("조건 일치", f"{(R['일치'] == '○').sum()} / {(R['일치'] != '').sum()}")
         st.caption("주의: 데모 모델은 41종 전체 클립으로 학습했으므로, AI Hub 학습 데이터 클립을 올리면 '본 적 있는' 데이터입니다. 일반화 성능은 '교차검증 bal_acc' 열(수행자 분리)을 보세요.")
     with c2:
-        st.plotly_chart(skeleton_fig([("업로드 클립", "#1c5cab", norm3d(X.astype(np.float32)).reshape(16, 24, 3))], f3.name), width="stretch")
+        st.plotly_chart(skeleton_fig([("업로드 클립", "#1c5cab", norm3d(X.astype(np.float32)).reshape(16, 24, 3))], f3.name), use_container_width=True)
 
 PAGES = {"🏠 개요": page_overview, "📦 데이터": page_data, "RQ1 · 조건별 성능": page_rq1, "RQ2 · 딥러닝 비교": page_rq2,
          "RQ3 · 2D vs 3D": page_rq3, "RQ4 · 어려운 조건": page_rq4, "🎯 라이브 데모": page_demo}
