@@ -112,6 +112,37 @@ code("""res = {"LogReg": r1["bal_acc"]}
 for kind in ["cnn", "gru"]:
     r, t = run("랫풀 다운", S3, kind); res[kind.upper()] = r["bal_acc"]; print(f"{kind}: 8-fold {t:.0f}s")
 pd.DataFrame(res).assign(**{"(평균)": lambda d: d.mean(1)})"""),
+md("""### 4-1. 학습 곡선 (에폭별 loss)
+랫풀 다운, 수행자 분리 폴드 1개에서 1D-CNN·GRU 를 학습하며 에폭마다 train/val loss(binary cross-entropy)를 기록합니다. 점선 = 조기 종료가 고른 최적 에폭(val loss 최소)."""),
+code("""import keras
+from sklearn.model_selection import GroupKFold, GroupShuffleSplit
+ids = np.where(ex == "랫풀 다운")[0]; S = norm3d(X3[ids]); Y = np.array([metas[i]["vals"] for i in ids]); G = np.array([metas[i]["z"] for i in ids])
+tr, te = next(GroupKFold(8).split(S, Y, G))
+mu, sd = S[tr].mean((0, 1)), S[tr].std((0, 1)) + 1e-6; Str = (S[tr] - mu) / sd
+itr, iva = next(GroupShuffleSplit(1, test_size=0.15, random_state=0).split(Str, groups=G[tr]))
+hist = {}
+for kind in ["cnn", "gru"]:
+    m = make_keras(kind, 16, Str.shape[2], Y.shape[1], 0)
+    h = m.fit(Str[itr], Y[tr][itr].astype("float32"), validation_data=(Str[iva], Y[tr][iva].astype("float32")), epochs=150, batch_size=32,
+              callbacks=[keras.callbacks.EarlyStopping(patience=15, restore_best_weights=True)], verbose=0)
+    hist[kind] = pd.DataFrame(h.history).rename_axis("epoch")
+fig, axs = plt.subplots(1, 2, figsize=(11, 3.8))
+for ax, (k, h) in zip(axs, hist.items()):
+    ax.plot(h.index + 1, h["loss"], label="train loss"); ax.plot(h.index + 1, h["val_loss"], label="val loss (검증 수행자)")
+    best = int(h["val_loss"].idxmin()) + 1; ax.axvline(best, ls="--", c="gray")
+    ax.set_title(f"{k.upper()} — 최적 에폭 {best} / 총 {len(h)}"); ax.set_xlabel("epoch"); ax.set_ylabel("binary cross-entropy"); ax.legend()
+plt.tight_layout(); plt.show()
+curves = pd.concat(hist, names=["model"]).reset_index(); curves.to_csv("results/tables/training_curves.csv", index=False, encoding="utf-8-sig")
+pd.concat({k: h.iloc[[0, int(h["val_loss"].idxmin()), len(h) - 1]] for k, h in hist.items()}).round(4)"""),
+md("### 4-2. 모델 비교 — 단일 시드 vs 3시드 앙상블 (대표 6종, 3D, 조건 26개 평균)"),
+code("""sr = pd.read_csv("results/tables/rep6_3d_seed_robustness.csv"); W6 = pd.read_csv("results/tables/rep6_3d_model_compare.csv")
+m = sr.groupby("model")[["seed0", "seed1", "seed2"]].mean()
+tab = pd.DataFrame({"시드0": [W6.logreg_bal_acc.mean(), *m.loc[["cnn", "gru"], "seed0"]], "시드1": [np.nan, *m.loc[["cnn", "gru"], "seed1"]],
+                    "시드2": [np.nan, *m.loc[["cnn", "gru"], "seed2"]], "3시드 앙상블": [W6.logreg_bal_acc.mean(), W6.cnn_bal_acc.mean(), W6.gru_bal_acc.mean()]},
+                   index=["LogReg(결정적)", "1D-CNN", "GRU"])
+ax = tab.plot.bar(figsize=(8, 3.8), rot=0, ylim=(0.78, 0.86), width=0.8); ax.set_ylabel("balanced accuracy"); ax.set_title("시드 1개로는 LogReg 보다 낮지만, 3시드 앙상블은 비슷하거나 높음")
+plt.tight_layout(); plt.show(); tab.round(3)"""),
+
 md("""한 번의 학습(시드 1개)은 무작위성이 커서, 본 실험에서는 대표 6종에 **시드 3개 × 8폴드**로 학습하고 확률을 평균(앙상블)했습니다:
 
 ```
@@ -123,7 +154,13 @@ python exp_seq.py --input {3d,2d,3d_ang,2dv1..2dv5} --exercises all --models log
 python analyze_results.py      # 표 results/tables/, 그림 figures/
 ```"""),
 
-md("## 5. 결과\n### RQ1 — 41종 운동별 판별 성능 (3D 요약특징 + LogReg)"),
+md("### 4-3. 분류 보고서와 혼동 행렬 — 덤벨 컬 (수행자 분리 아웃오브폴드 예측, `make_ppt_figs.py`)"),
+code("""rep = pd.read_csv("results/tables/classification_report_dumbbell_curl.csv")
+display(rep[rep.cls != "accuracy"].pivot_table(index=["model", "condition"], columns="cls", values=["precision", "recall", "f1"]).round(3))
+display(Image("figures/fig9_confusion_dumbbell_curl.png", width=950))"""),
+md("## 5. 결과\n### 탐색적 데이터 분석(EDA)과 구축 프로세스"),
+code("""display(Image("figures/fig10_eda.png", width=950)); display(Image("figures/fig11_pipeline.png", width=950))"""),
+md("### RQ1 — 41종 운동별 판별 성능 (3D 요약특징 + LogReg)"),
 code("""A3 = pd.read_csv("results/all_logreg_3d_paired_metrics.csv")
 print(f"조건 {len(A3)}개 | balanced acc 평균 {A3.bal_acc.mean():.3f} (중앙값 {A3.bal_acc.median():.3f}) | AUROC 평균 {A3.auroc.mean():.3f} | 0.80 이상 {(A3.bal_acc >= .8).sum()}개")
 display(Image("figures/fig1_exercise_acc_vs_majority.png", width=650))"""),
